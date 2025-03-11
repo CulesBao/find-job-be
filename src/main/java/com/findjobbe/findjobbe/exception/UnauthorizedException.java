@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Getter
 @Setter
 public class UnauthorizedException extends RuntimeException {
-  private final ErrorResponse errorResponse;
 
-  public UnauthorizedException(ErrorResponse errorResponse) {
-    super(errorResponse.getMessage());
-    this.errorResponse = errorResponse;
+  public UnauthorizedException(ErrorResponse error) {
+    super(error.getMessage());
   }
 }

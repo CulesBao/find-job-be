@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Getter
 @Setter
 public class BadRequestException extends RuntimeException {
-  private final ErrorResponse errorResponse;
 
-  public BadRequestException(ErrorResponse errorResponse) {
-    super(errorResponse.getMessage());
-    this.errorResponse = errorResponse;
+  public BadRequestException(String error) {
+    super(error);
   }
 }

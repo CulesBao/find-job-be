@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Getter
 @Setter
 public class NotFoundException extends RuntimeException {
-  private final ErrorResponse errorResponse;
-
-  public NotFoundException(ErrorResponse errorResponse) {
-    super(errorResponse.getMessage());
-    this.errorResponse = errorResponse;
+  public NotFoundException(ErrorResponse error) {
+    super(error.getMessage());
   }
 }
