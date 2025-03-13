@@ -2,7 +2,7 @@ package com.findjobbe.findjobbe.enums;
 
 public enum SocialLinkType {
     FACEBOOK,
-    GMAIL,
+    EMAIL,
     LINKEDIN,
     GITHUB,
     INSTAGRAM,

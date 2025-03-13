@@ -3,18 +3,17 @@ package com.findjobbe.findjobbe.model;
 import com.findjobbe.findjobbe.enums.Provider;
 import com.findjobbe.findjobbe.enums.Role;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.*;
 
 @Entity
-@Table (name = "account")
+@Table(name = "account")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Account extends AbstractEntity {
     @Column(nullable = false, unique = true, length = 50)
     private String email;
@@ -57,4 +56,5 @@ public class Account extends AbstractEntity {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "employer_profile_id")
     private EmployerProfile employerProfile;
+
 }
