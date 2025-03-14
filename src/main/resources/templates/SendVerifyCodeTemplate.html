@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Verification Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .header img {
+            height: 40px;
+        }
+        .header a {
+            text-decoration: none;
+            color: #333;
+            margin: 0 5px;
+            font-size: 14px;
+        }
+        .content {
+            padding: 20px 0;
+            text-align: center;
+        }
+        .code-box {
+            font-size: 28px;
+            font-weight: bold;
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            letter-spacing: 5px;
+            display: inline-block;
+            margin: 15px 0;
+        }
+        .footer {
+            font-size: 14px;
+            color: #777;
+            margin-top: 20px;
+        }
+        .logo {
+            margin-top: 20px;
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img src="cid:image_logo" alt="Logo">
+    </div>
+
+    <div class="content">
+        <h2>Hi there,</h2>
+        <p>This is your one-time verification code.</p>
+        <div class="code-box" th:text="${code}">123456</div>
+        <p>This code is only active for the next 5 minutes. Once the code expires, you will have to resubmit a request for a new one.</p>
+    </div>
+
+    <div class="footer">
+        <p>Keep making awesome stuff!<br>Cules</p>
+        <img class="logo" src="cid:image_logo" alt="Logo">
+    </div>
+</div>
+</body>
+</html>
