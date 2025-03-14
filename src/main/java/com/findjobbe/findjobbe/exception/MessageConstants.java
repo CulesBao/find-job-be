@@ -7,4 +7,5 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageConstants {
   public static final String EMAIL_ALREADY_EXISTS = "email_already_exists";
+  public static final String INVALID_CODE = "invalid_code";
 }

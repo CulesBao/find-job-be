@@ -57,4 +57,7 @@ public class Account extends AbstractEntity {
     @JoinColumn(name = "employer_profile_id")
     private EmployerProfile employerProfile;
 
+  public boolean isActive() {
+    return isActive;
+  }
 }
