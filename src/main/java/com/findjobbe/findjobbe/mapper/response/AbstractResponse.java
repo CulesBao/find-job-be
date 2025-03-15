@@ -1,4 +1,4 @@
-package com.findjobbe.findjobbe.payload.response;
+package com.findjobbe.findjobbe.mapper.response;
 
 import java.util.Optional;
 import lombok.AllArgsConstructor;

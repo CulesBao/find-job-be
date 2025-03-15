@@ -17,4 +17,6 @@ public interface AccountRepository extends JpaRepository<Account, UUID> {
   @Query(
       "SELECT a FROM Account a WHERE a.id = :id AND a.code = :code AND a.expiredAt > CURRENT_TIMESTAMP")
   Optional<Account> findByCode(@Param("id") UUID id, @Param("code") String code);
+
+  Optional<Account> findByEmailAndIsActive(String email, Boolean isActive);
 }

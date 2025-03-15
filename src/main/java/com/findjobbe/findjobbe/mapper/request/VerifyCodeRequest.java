@@ -1,4 +1,4 @@
-package com.findjobbe.findjobbe.payload.request;
+package com.findjobbe.findjobbe.mapper.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

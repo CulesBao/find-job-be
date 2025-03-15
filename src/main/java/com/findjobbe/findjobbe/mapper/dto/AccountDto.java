@@ -1,4 +1,4 @@
-package com.findjobbe.findjobbe.payload.dto;
+package com.findjobbe.findjobbe.mapper.dto;
 
 import com.findjobbe.findjobbe.model.Account;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.findjobbe.findjobbe.payload.request;
+package com.findjobbe.findjobbe.mapper.request;
 
 import com.findjobbe.findjobbe.enums.Provider;
 import com.findjobbe.findjobbe.enums.Role;

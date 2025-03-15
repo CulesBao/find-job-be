@@ -1,21 +1,23 @@
 package com.findjobbe.findjobbe.service.impl;
 
-import com.findjobbe.findjobbe.exception.BadRequestException;
-import com.findjobbe.findjobbe.exception.MessageConstants;
+import com.findjobbe.findjobbe.exception.*;
+import com.findjobbe.findjobbe.mapper.dto.AccountDto;
+import com.findjobbe.findjobbe.mapper.request.LoginRequest;
+import com.findjobbe.findjobbe.mapper.request.RegisterRequest;
+import com.findjobbe.findjobbe.mapper.request.VerifyCodeRequest;
 import com.findjobbe.findjobbe.model.Account;
-import com.findjobbe.findjobbe.payload.dto.AccountDto;
-import com.findjobbe.findjobbe.payload.request.RegisterRequest;
-import com.findjobbe.findjobbe.payload.request.VerifyCodeRequest;
-import com.findjobbe.findjobbe.payload.response.AbstractResponse;
 import com.findjobbe.findjobbe.repository.AccountRepository;
+import com.findjobbe.findjobbe.security.JwtTokenManager;
 import com.findjobbe.findjobbe.service.IAuthService;
 import com.findjobbe.findjobbe.service.IMailService;
 import com.findjobbe.findjobbe.utils.GenerateCode;
 import jakarta.mail.MessagingException;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,21 +27,27 @@ public class AuthServiceImpl implements IAuthService {
   private final GenerateCode generateCode;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
   private final IMailService mailService;
+  private final AuthenticationManager authenticationManager;
+  private final JwtTokenManager jwtTokenManager;
 
   @Autowired
   public AuthServiceImpl(
       AccountRepository accountRepository,
       GenerateCode generateCode,
       BCryptPasswordEncoder bCryptPasswordEncoder,
-      IMailService mailService) {
+      IMailService mailService,
+      JwtTokenManager jwtTokenManager,
+      AuthenticationManager authenticationManager) {
     this.accountRepository = accountRepository;
     this.generateCode = generateCode;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     this.mailService = mailService;
+    this.jwtTokenManager = jwtTokenManager;
+    this.authenticationManager = authenticationManager;
   }
 
   @Override
-  public AbstractResponse register(RegisterRequest registerRequest) throws MessagingException {
+  public AccountDto register(RegisterRequest registerRequest) throws MessagingException {
     if (accountRepository.existsByEmail(registerRequest.getEmail())) {
       throw new BadRequestException(MessageConstants.EMAIL_ALREADY_EXISTS);
     }
@@ -60,7 +68,7 @@ public class AuthServiceImpl implements IAuthService {
             .employerProfile(null)
             .build();
     Account savedAccount = accountRepository.save(account);
-    AccountDto newAccount =
+    AccountDto accountDto =
         AccountDto.builder()
             .id(savedAccount.getId())
             .email(savedAccount.getEmail())
@@ -69,17 +77,36 @@ public class AuthServiceImpl implements IAuthService {
             .role(String.valueOf(savedAccount.getRole()))
             .build();
     mailService.sendVerifyCode(savedAccount.getEmail(), savedAccount.getCode());
-    return new AbstractResponse("Register successfully", Optional.of(newAccount));
+    return accountDto;
   }
 
   @Override
-  public AbstractResponse verifyCode(String accountId, VerifyCodeRequest verifyCodeRequest) {
+  public void verifyCode(String accountId, VerifyCodeRequest verifyCodeRequest) {
     Account account =
         accountRepository
             .findByCode(UUID.fromString(accountId), verifyCodeRequest.getCode())
             .orElseThrow(() -> new BadRequestException(MessageConstants.INVALID_CODE));
     account.setIsActive(true);
     accountRepository.save(account);
-    return new AbstractResponse("Verify code successfully", null);
+  }
+
+  @Override
+  public String login(LoginRequest loginRequest) {
+    Account account =
+        accountRepository
+            .findByEmailAndIsActive(loginRequest.getEmail(), true)
+            .orElseThrow(() -> new UnauthorizedException(MessageConstants.LOGIN_FAILED));
+
+    try {
+      UsernamePasswordAuthenticationToken authenticationToken =
+          new UsernamePasswordAuthenticationToken(
+              loginRequest.getEmail(), loginRequest.getPassword());
+
+      authenticationManager.authenticate(authenticationToken);
+    } catch (BadCredentialsException e) {
+      throw new UnauthorizedException(MessageConstants.LOGIN_FAILED);
+    }
+
+    return jwtTokenManager.generateToken(account);
   }
 }

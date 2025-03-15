@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Setter
 public class ForbiddenException extends RuntimeException {
 
-  public ForbiddenException(ErrorResponse error) {
-    super(error.getMessage());
+  public ForbiddenException(String error) {
+    super(error);
   }
 }

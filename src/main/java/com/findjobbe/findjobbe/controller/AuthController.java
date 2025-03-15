@@ -1,11 +1,15 @@
 package com.findjobbe.findjobbe.controller;
 
 import com.findjobbe.findjobbe.exception.MessageConstants;
-import com.findjobbe.findjobbe.payload.request.RegisterRequest;
-import com.findjobbe.findjobbe.payload.request.VerifyCodeRequest;
+import com.findjobbe.findjobbe.mapper.dto.AccountDto;
+import com.findjobbe.findjobbe.mapper.request.LoginRequest;
+import com.findjobbe.findjobbe.mapper.request.RegisterRequest;
+import com.findjobbe.findjobbe.mapper.request.VerifyCodeRequest;
+import com.findjobbe.findjobbe.mapper.response.AbstractResponse;
 import com.findjobbe.findjobbe.service.IAuthService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +29,21 @@ public class AuthController {
   @PostMapping("/register")
   public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest)
       throws MessagingException {
-    return ResponseEntity.ok(authService.register(registerRequest));
+    AccountDto accountDto = authService.register(registerRequest);
+    return ResponseEntity.ok(
+        new AbstractResponse("Register successfully", Optional.of(accountDto)));
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+    String token = authService.login(loginRequest);
+    return ResponseEntity.ok(new AbstractResponse("Login successfully", Optional.of(token)));
   }
 
   @PutMapping("/verify/{accountId}")
   public ResponseEntity<?> verifyCode(
       @PathVariable String accountId, @Valid @RequestBody VerifyCodeRequest verifyCodeRequest) {
-    return ResponseEntity.ok(authService.verifyCode(accountId, verifyCodeRequest));
+    authService.verifyCode(accountId, verifyCodeRequest);
+    return ResponseEntity.ok(new AbstractResponse("Verify code successfully", Optional.empty()));
   }
 }
