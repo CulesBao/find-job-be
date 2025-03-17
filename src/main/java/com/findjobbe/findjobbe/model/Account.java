@@ -38,17 +38,6 @@ public class Account extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "province_id")
-    private Province province;
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "district_id")
-    private District district;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
-    private List<SocialLink> socialLinks;
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "candidate_profile_id")
     private CandidateProfile candidateProfile;

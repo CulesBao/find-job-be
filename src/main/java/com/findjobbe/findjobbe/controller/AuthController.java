@@ -6,6 +6,8 @@ import com.findjobbe.findjobbe.mapper.request.LoginRequest;
 import com.findjobbe.findjobbe.mapper.request.RegisterRequest;
 import com.findjobbe.findjobbe.mapper.request.VerifyCodeRequest;
 import com.findjobbe.findjobbe.mapper.response.AbstractResponse;
+import com.findjobbe.findjobbe.mapper.response.LoginResponse;
+import com.findjobbe.findjobbe.mapper.response.RegisterResponse;
 import com.findjobbe.findjobbe.service.IAuthService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
@@ -31,13 +33,14 @@ public class AuthController {
       throws MessagingException {
     AccountDto accountDto = authService.register(registerRequest);
     return ResponseEntity.ok(
-        new AbstractResponse("Register successfully", Optional.of(accountDto)));
+        new AbstractResponse("Register successfully", Optional.of(new RegisterResponse(accountDto))));
   }
 
   @PostMapping("/login")
   public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
     String token = authService.login(loginRequest);
-    return ResponseEntity.ok(new AbstractResponse("Login successfully", Optional.of(token)));
+    return ResponseEntity.ok(
+        new AbstractResponse("Login successfully", Optional.of(new LoginResponse(token))));
   }
 
   @PutMapping("/verify/{accountId}")

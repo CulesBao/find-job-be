@@ -61,9 +61,6 @@ public class AuthServiceImpl implements IAuthService {
             .expiredAt(LocalDateTime.now().plusMinutes(5))
             .provider(registerRequest.getProvider())
             .role(registerRequest.getRole())
-            .province(null)
-            .district(null)
-            .socialLinks(null)
             .candidateProfile(null)
             .employerProfile(null)
             .build();

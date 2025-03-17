@@ -14,6 +14,10 @@ public class SocialLink extends AbstractEntity {
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
+    @JoinColumn(name = "candidate_profile_id", referencedColumnName = "id")
+    private CandidateProfile candidateProfile;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employer_profile_id", referencedColumnName = "id")
+    private EmployerProfile employerProfile;
 }
