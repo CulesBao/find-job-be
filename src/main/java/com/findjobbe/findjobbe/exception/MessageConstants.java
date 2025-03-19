@@ -11,4 +11,5 @@ public class MessageConstants {
   public static final String LOGIN_FAILED = "login_failed";
   public static final String ACCOUNT_NOT_ACTIVE = "account_not_active";
   public static final String ACCOUNT_NOT_FOUND = "account_not_found";
+  public static final String WRONG_PROVINCE_CODE = "wrong_province_code";
 }
