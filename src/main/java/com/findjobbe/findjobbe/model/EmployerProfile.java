@@ -3,11 +3,15 @@ package com.findjobbe.findjobbe.model;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "employer_profile")
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class EmployerProfile extends AbstractEntity {
   @Column(nullable = false)
   private String name;

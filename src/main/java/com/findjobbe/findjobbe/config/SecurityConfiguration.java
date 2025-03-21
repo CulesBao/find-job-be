@@ -44,7 +44,8 @@ public class SecurityConfiguration {
                         "api/auth/login",
                         "api/auth/verify/**",
                         "/api/provinces",
-                        "api/districts/**")
+                        "api/districts/**",
+                        "api/candidate-profile/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated())

@@ -2,13 +2,15 @@ package com.findjobbe.findjobbe.model;
 
 import com.findjobbe.findjobbe.enums.SocialLinkType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "social_links")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class SocialLink extends AbstractEntity {
   @Column(nullable = false, name = "type")
   @Enumerated(EnumType.STRING)

@@ -1,5 +1,7 @@
 package com.findjobbe.findjobbe.mapper.request;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.findjobbe.findjobbe.enums.Education;
 import com.findjobbe.findjobbe.mapper.dto.BaseProfile;
 import jakarta.persistence.EnumType;
@@ -17,6 +19,7 @@ import org.hibernate.validator.constraints.Length;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CandidateProfileRequest extends BaseProfile {
   @NotNull
   @NotBlank
@@ -39,6 +42,9 @@ public class CandidateProfileRequest extends BaseProfile {
   @NotNull
   @Enumerated(EnumType.STRING)
   private Education education;
+
+  @NotNull @NotBlank private String provinceCode;
+  @NotNull @NotBlank private String districtCode;
 
   @NotNull private String bio;
 }

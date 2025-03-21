@@ -12,4 +12,6 @@ public class MessageConstants {
   public static final String ACCOUNT_NOT_FOUND = "account_not_found";
   public static final String WRONG_PROVINCE_CODE = "wrong_province_code";
   public static final String PROFILE_NOT_FOUND = "profile_not_found";
+  public static final String PROVINCE_NOT_FOUND = "province_not_found";
+  public static final String DISTRICT_NOT_FOUND = "district_not_found";
 }

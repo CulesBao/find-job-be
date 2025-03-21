@@ -1,16 +1,19 @@
 package com.findjobbe.findjobbe.model;
 
 import com.findjobbe.findjobbe.enums.Education;
+import com.findjobbe.findjobbe.mapper.request.CandidateProfileRequest;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
 @Table(name = "candidate_profile")
 @Builder
+@Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CandidateProfile extends AbstractEntity {
   @Column(nullable = false, name = "first_name")
   private String firstName;
@@ -51,4 +54,14 @@ public class CandidateProfile extends AbstractEntity {
 
   @OneToMany(cascade = CascadeType.ALL)
   private List<Application> applications;
+
+  public void update(CandidateProfileRequest candidateProfileRequest) {
+    this.firstName = candidateProfileRequest.getFirstName();
+    this.lastName = candidateProfileRequest.getLastName();
+    this.phoneNumber = candidateProfileRequest.getPhoneNumber();
+    this.dateOfBirth = candidateProfileRequest.getDateOfBirth();
+    this.gender = candidateProfileRequest.getGender();
+    this.education = candidateProfileRequest.getEducation();
+    this.bio = candidateProfileRequest.getBio();
+  }
 }
