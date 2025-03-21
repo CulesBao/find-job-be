@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/candidate-profile")
@@ -69,5 +70,15 @@ public class CandidateProfileController {
         this.profileServiceFactory.getProfileService(currentUser.getAccount().getRole());
     profileService.updateProfile(currentUser.getAccount().getId().toString(), request);
     return ResponseEntity.ok(new AbstractResponse("Profile updated successfully", null));
+  }
+
+  @PutMapping("/update-avatar")
+  @PreAuthorize("hasRole('ROLE_CANDIDATE')")
+  public ResponseEntity<?> updateAvatar(
+      @RequestParam("avatar") MultipartFile avatar, @CurrentUser CustomAccountDetails currentUser) {
+    IProfileService profileService =
+        this.profileServiceFactory.getProfileService(currentUser.getAccount().getRole());
+    profileService.updateProfileImage(currentUser.getAccount().getId().toString(), avatar);
+    return ResponseEntity.ok(new AbstractResponse("Avatar updated successfully", null));
   }
 }

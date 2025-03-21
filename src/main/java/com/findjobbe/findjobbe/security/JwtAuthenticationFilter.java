@@ -1,7 +1,6 @@
 package com.findjobbe.findjobbe.security;
 
 import com.findjobbe.findjobbe.service.impl.UserDetailsServiceImpl;
-import com.findjobbe.findjobbe.utils.SecurityConstants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +21,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Service
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+  public static final String TOKEN_PREFIX = "Bearer ";
+  public static final String HEADER_STRING = "Authorization";
   private final JwtTokenManager jwtTokenManager;
   private final UserDetailsServiceImpl userDetailsService;
 
@@ -29,11 +30,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    final String authHeader = request.getHeader(SecurityConstants.HEADER_STRING);
+    final String authHeader = request.getHeader(HEADER_STRING);
     String email = null, authToken = null;
 
-    if (Objects.nonNull(authHeader) && authHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) {
-      authToken = authHeader.replace(SecurityConstants.TOKEN_PREFIX, "");
+    if (Objects.nonNull(authHeader) && authHeader.startsWith(TOKEN_PREFIX)) {
+      authToken = authHeader.replace(TOKEN_PREFIX, "");
       try {
         email = jwtTokenManager.getEmailFromToken(authToken).toString();
       } catch (Exception e) {

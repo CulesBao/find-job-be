@@ -1,5 +1,6 @@
 package com.findjobbe.findjobbe.service.impl;
 
+import com.findjobbe.findjobbe.exception.BadRequestException;
 import com.findjobbe.findjobbe.exception.MessageConstants;
 import com.findjobbe.findjobbe.exception.NotFoundException;
 import com.findjobbe.findjobbe.mapper.dto.BaseProfile;
@@ -8,6 +9,7 @@ import com.findjobbe.findjobbe.mapper.dto.SocialLinkDto;
 import com.findjobbe.findjobbe.mapper.request.CandidateProfileRequest;
 import com.findjobbe.findjobbe.model.*;
 import com.findjobbe.findjobbe.repository.*;
+import com.findjobbe.findjobbe.service.ICloudinaryService;
 import com.findjobbe.findjobbe.service.IProfileService;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class CandidateProfileServiceImpl implements IProfileService {
@@ -23,6 +26,7 @@ public class CandidateProfileServiceImpl implements IProfileService {
   private final DistrictServiceImpl districtServiceImpl;
   private final SocialLinkRepository socialLinkRepository;
   private final ProvinceServiceImpl provinceServiceImpl;
+  private final ICloudinaryService cloudinaryService;
 
   @Autowired
   public CandidateProfileServiceImpl(
@@ -30,12 +34,14 @@ public class CandidateProfileServiceImpl implements IProfileService {
       CandidateProfileRepository candidateProfileRepository,
       DistrictServiceImpl districtServiceImpl,
       SocialLinkRepository socialLinkRepository,
-      ProvinceServiceImpl provinceServiceImpl) {
+      ProvinceServiceImpl provinceServiceImpl,
+      ICloudinaryService cloudinaryService) {
     this.accountRepository = accountRepository;
     this.candidateProfileRepository = candidateProfileRepository;
     this.districtServiceImpl = districtServiceImpl;
     this.socialLinkRepository = socialLinkRepository;
     this.provinceServiceImpl = provinceServiceImpl;
+    this.cloudinaryService = cloudinaryService;
   }
 
   @Override
@@ -119,5 +125,20 @@ public class CandidateProfileServiceImpl implements IProfileService {
     candidateProfile.setProvince(province);
     candidateProfile.setDistrict(district);
     candidateProfileRepository.save(candidateProfile);
+  }
+
+  @Override
+  public void updateProfileImage(String accountId, MultipartFile image) {
+    try {
+      String imgUrl = cloudinaryService.uploadFile(image);
+      CandidateProfile candidateProfile =
+          candidateProfileRepository
+              .findByAccountId(UUID.fromString(accountId))
+              .orElseThrow(() -> new NotFoundException(MessageConstants.PROFILE_NOT_FOUND));
+      candidateProfile.setAvatarUrl(imgUrl);
+      candidateProfileRepository.save(candidateProfile);
+    } catch (Exception e) {
+      throw new BadRequestException(MessageConstants.IMAGE_UPLOAD_FAILED);
+    }
   }
 }

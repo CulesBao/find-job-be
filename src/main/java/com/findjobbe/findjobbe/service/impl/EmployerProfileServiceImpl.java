@@ -5,6 +5,7 @@ import com.findjobbe.findjobbe.mapper.dto.SocialLinkDto;
 import com.findjobbe.findjobbe.service.IProfileService;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class EmployerProfileServiceImpl implements IProfileService {
@@ -24,4 +25,7 @@ public class EmployerProfileServiceImpl implements IProfileService {
 
   @Override
   public void updateProfile(String accountId, BaseProfile profileRequest) {}
+
+  @Override
+  public void updateProfileImage(String accountId, MultipartFile image) {}
 }
