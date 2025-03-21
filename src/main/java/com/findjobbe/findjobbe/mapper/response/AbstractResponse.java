@@ -10,5 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AbstractResponse {
   String message;
-  Optional<Object> data;
+  Object data;
 }

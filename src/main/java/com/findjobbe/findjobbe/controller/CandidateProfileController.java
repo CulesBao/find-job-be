@@ -8,7 +8,6 @@ import com.findjobbe.findjobbe.mapper.response.AbstractResponse;
 import com.findjobbe.findjobbe.model.CustomAccountDetails;
 import com.findjobbe.findjobbe.service.IProfileService;
 import jakarta.validation.Valid;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,6 +37,6 @@ public class CandidateProfileController {
         (CandidateProfileDto)
             profileService.createProfile(currentUser.getAccount().getId(), request);
     return ResponseEntity.ok(
-        new AbstractResponse("Profile created successfully", Optional.of(candidateProfile)));
+        new AbstractResponse("Profile created successfully", candidateProfile));
   }
 }

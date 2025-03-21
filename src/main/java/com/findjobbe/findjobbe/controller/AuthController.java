@@ -5,12 +5,9 @@ import com.findjobbe.findjobbe.mapper.request.LoginRequest;
 import com.findjobbe.findjobbe.mapper.request.RegisterRequest;
 import com.findjobbe.findjobbe.mapper.request.VerifyCodeRequest;
 import com.findjobbe.findjobbe.mapper.response.AbstractResponse;
-import com.findjobbe.findjobbe.mapper.response.LoginResponse;
-import com.findjobbe.findjobbe.mapper.response.RegisterResponse;
 import com.findjobbe.findjobbe.service.IAuthService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,22 +26,19 @@ public class AuthController {
   public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest)
       throws MessagingException {
     AccountDto accountDto = authService.register(registerRequest);
-    return ResponseEntity.ok(
-        new AbstractResponse(
-            "Register successfully", Optional.of(new RegisterResponse(accountDto))));
+    return ResponseEntity.ok(new AbstractResponse("Register successfully", accountDto));
   }
 
   @PostMapping("/login")
   public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
     String token = authService.login(loginRequest);
-    return ResponseEntity.ok(
-        new AbstractResponse("Login successfully", Optional.of(new LoginResponse(token))));
+    return ResponseEntity.ok(new AbstractResponse("Login successfully", token));
   }
 
   @PutMapping("/verify/{accountId}")
   public ResponseEntity<?> verifyCode(
       @PathVariable String accountId, @Valid @RequestBody VerifyCodeRequest verifyCodeRequest) {
     authService.verifyCode(accountId, verifyCodeRequest);
-    return ResponseEntity.ok(new AbstractResponse("Verify code successfully", Optional.empty()));
+    return ResponseEntity.ok(new AbstractResponse("Verify code successfully", null));
   }
 }
