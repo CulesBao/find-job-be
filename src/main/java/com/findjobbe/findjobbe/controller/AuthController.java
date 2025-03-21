@@ -1,6 +1,5 @@
 package com.findjobbe.findjobbe.controller;
 
-import com.findjobbe.findjobbe.exception.MessageConstants;
 import com.findjobbe.findjobbe.mapper.dto.AccountDto;
 import com.findjobbe.findjobbe.mapper.request.LoginRequest;
 import com.findjobbe.findjobbe.mapper.request.RegisterRequest;
@@ -19,12 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-  private final MessageConstants messageConstants;
   private final IAuthService authService;
 
   @Autowired
-  public AuthController(MessageConstants messageConstants, IAuthService authService) {
-    this.messageConstants = messageConstants;
+  public AuthController(IAuthService authService) {
     this.authService = authService;
   }
 
@@ -33,7 +30,8 @@ public class AuthController {
       throws MessagingException {
     AccountDto accountDto = authService.register(registerRequest);
     return ResponseEntity.ok(
-        new AbstractResponse("Register successfully", Optional.of(new RegisterResponse(accountDto))));
+        new AbstractResponse(
+            "Register successfully", Optional.of(new RegisterResponse(accountDto))));
   }
 
   @PostMapping("/login")

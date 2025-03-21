@@ -65,14 +65,7 @@ public class AuthServiceImpl implements IAuthService {
             .employerProfile(null)
             .build();
     Account savedAccount = accountRepository.save(account);
-    AccountDto accountDto =
-        AccountDto.builder()
-            .id(savedAccount.getId())
-            .email(savedAccount.getEmail())
-            .isActive(savedAccount.getIsActive())
-            .provider(String.valueOf(savedAccount.getProvider()))
-            .role(String.valueOf(savedAccount.getRole()))
-            .build();
+    AccountDto accountDto = new AccountDto(savedAccount);
     mailService.sendVerifyCode(savedAccount.getEmail(), savedAccount.getCode());
     return accountDto;
   }
