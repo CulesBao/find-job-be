@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  db:
+    container_name: db
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=find_job_db
+    volumes:
+      - find-job-volume:/var/lib/postgresql/data
+    networks:
+      - app-network
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_URL=jdbc:postgresql://db:5432/find_job_db
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - app-network
+volumes:
+  find-job-volume:
+    external: true
+
+networks:
+  app-network:
+    driver: bridge
