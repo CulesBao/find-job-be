@@ -9,6 +9,7 @@ import com.findjobbe.findjobbe.service.IAuthService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,8 @@ public class AuthController {
   public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest)
       throws MessagingException {
     AccountDto accountDto = authService.register(registerRequest);
-    return ResponseEntity.ok(new AbstractResponse("Register successfully", accountDto));
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(new AbstractResponse("Register successfully", accountDto));
   }
 
   @PostMapping("/login")

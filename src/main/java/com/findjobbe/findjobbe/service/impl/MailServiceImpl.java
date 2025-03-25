@@ -3,9 +3,7 @@ package com.findjobbe.findjobbe.service.impl;
 import com.findjobbe.findjobbe.service.IMailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import java.io.File;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -13,7 +11,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 @Service
-public class IMailServiceImpl implements IMailService {
+public class MailServiceImpl implements IMailService {
   @Autowired private JavaMailSender mailSender;
   @Autowired private TemplateEngine templateEngine;
 
@@ -41,10 +39,6 @@ public class IMailServiceImpl implements IMailService {
     helper.setTo(to);
     helper.setSubject("Your Verification Code");
     helper.setText(htmlContent, true);
-
-    FileSystemResource res =
-        new FileSystemResource(new File("src/main/resources/static/pl-main-logo.png"));
-    helper.addInline("image_logo", res);
 
     mailSender.send(message);
   }

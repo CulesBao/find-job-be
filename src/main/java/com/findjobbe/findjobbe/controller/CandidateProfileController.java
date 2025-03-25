@@ -20,11 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/candidate-profile")
 public class CandidateProfileController {
-  private final ProfileServiceFactory profileServiceFactory;
+  private final IProfileService profileService;
 
   @Autowired
   public CandidateProfileController(ProfileServiceFactory profileServiceFactory) {
-    this.profileServiceFactory = profileServiceFactory;
+    this.profileService = profileServiceFactory.getProfileService(Role.CANDIDATE);
   }
 
   @PostMapping("/")
@@ -32,8 +32,6 @@ public class CandidateProfileController {
   public ResponseEntity<?> createProfile(
       @Valid @RequestBody CandidateProfileRequest request,
       @CurrentUser CustomAccountDetails currentUser) {
-    IProfileService profileService =
-        this.profileServiceFactory.getProfileService(currentUser.getAccount().getRole());
     CandidateProfileDto candidateProfile =
         (CandidateProfileDto)
             profileService.createProfile(currentUser.getAccount().getId().toString(), request);
@@ -42,7 +40,6 @@ public class CandidateProfileController {
 
   @GetMapping("/{candidateProfileId}")
   public ResponseEntity<?> getProfile(@PathVariable String candidateProfileId) {
-    IProfileService profileService = this.profileServiceFactory.getProfileService(Role.CANDIDATE);
     CandidateProfileDto candidateProfile =
         (CandidateProfileDto) profileService.getProfile(candidateProfileId);
     return ResponseEntity.ok(
@@ -54,8 +51,6 @@ public class CandidateProfileController {
   public ResponseEntity<?> updateSocialLinks(
       @Valid @RequestBody SocialLinkRequest request,
       @CurrentUser CustomAccountDetails currentUser) {
-    IProfileService profileService =
-        this.profileServiceFactory.getProfileService(currentUser.getAccount().getRole());
     profileService.updateSocialLinks(
         currentUser.getAccount().getId().toString(), request.getSocialLinks());
     return ResponseEntity.ok(new AbstractResponse("Social links updated successfully", null));
@@ -66,8 +61,6 @@ public class CandidateProfileController {
   public ResponseEntity<?> updateProfile(
       @Valid @RequestBody CandidateProfileRequest request,
       @CurrentUser CustomAccountDetails currentUser) {
-    IProfileService profileService =
-        this.profileServiceFactory.getProfileService(currentUser.getAccount().getRole());
     profileService.updateProfile(currentUser.getAccount().getId().toString(), request);
     return ResponseEntity.ok(new AbstractResponse("Profile updated successfully", null));
   }
@@ -76,8 +69,6 @@ public class CandidateProfileController {
   @PreAuthorize("hasRole('ROLE_CANDIDATE')")
   public ResponseEntity<?> updateAvatar(
       @RequestParam("avatar") MultipartFile avatar, @CurrentUser CustomAccountDetails currentUser) {
-    IProfileService profileService =
-        this.profileServiceFactory.getProfileService(currentUser.getAccount().getRole());
     profileService.updateProfileImage(currentUser.getAccount().getId().toString(), avatar);
     return ResponseEntity.ok(new AbstractResponse("Avatar updated successfully", null));
   }
