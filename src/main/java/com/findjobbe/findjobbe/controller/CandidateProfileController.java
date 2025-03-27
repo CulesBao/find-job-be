@@ -35,7 +35,8 @@ public class CandidateProfileController {
     CandidateProfileDto candidateProfile =
         (CandidateProfileDto)
             profileService.createProfile(currentUser.getAccount().getId().toString(), request);
-    return ResponseEntity.status(HttpStatus.CREATED).body(candidateProfile);
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(new AbstractResponse("Profile created successfully", candidateProfile));
   }
 
   @GetMapping("/{candidateProfileId}")

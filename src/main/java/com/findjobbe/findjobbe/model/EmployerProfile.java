@@ -1,17 +1,18 @@
 package com.findjobbe.findjobbe.model;
 
+import com.findjobbe.findjobbe.mapper.request.EmployerProfileRequest;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "employer_profile")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class EmployerProfile extends AbstractEntity {
   @Column(nullable = false)
   private String name;
@@ -44,4 +45,20 @@ public class EmployerProfile extends AbstractEntity {
 
   @OneToMany(mappedBy = "employerProfile", cascade = CascadeType.ALL)
   private List<Job> jobs;
+
+  public String getLogoUrl() {
+    return logo_url;
+  }
+
+  public String getWebsiteUrl() {
+    return website_url;
+  }
+
+  public void update(EmployerProfileRequest employerProfileRequest){
+    this.name = employerProfileRequest.getName();
+    this.about = employerProfileRequest.getAbout();
+    this.vision = employerProfileRequest.getVision();
+    this.website_url = employerProfileRequest.getWebsiteUrl();
+    this.establishedIn = employerProfileRequest.getEstablishedIn();
+  }
 }

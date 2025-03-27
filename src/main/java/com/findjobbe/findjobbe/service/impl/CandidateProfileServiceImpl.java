@@ -9,13 +9,14 @@ import com.findjobbe.findjobbe.mapper.dto.SocialLinkDto;
 import com.findjobbe.findjobbe.mapper.request.CandidateProfileRequest;
 import com.findjobbe.findjobbe.model.*;
 import com.findjobbe.findjobbe.repository.*;
-import com.findjobbe.findjobbe.service.ICloudinaryService;
+import com.findjobbe.findjobbe.service.IFileService;
 import com.findjobbe.findjobbe.service.IProfileService;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +27,10 @@ public class CandidateProfileServiceImpl implements IProfileService {
   private final DistrictServiceImpl districtServiceImpl;
   private final SocialLinkRepository socialLinkRepository;
   private final ProvinceServiceImpl provinceServiceImpl;
-  private final ICloudinaryService cloudinaryService;
+  private final IFileService cloudinaryService;
+
+  @Value("${default-candidate-avatar")
+  private String defaultCandidateAvatar;
 
   @Autowired
   public CandidateProfileServiceImpl(
@@ -35,7 +39,7 @@ public class CandidateProfileServiceImpl implements IProfileService {
       DistrictServiceImpl districtServiceImpl,
       SocialLinkRepository socialLinkRepository,
       ProvinceServiceImpl provinceServiceImpl,
-      ICloudinaryService cloudinaryService) {
+      IFileService cloudinaryService) {
     this.accountRepository = accountRepository;
     this.candidateProfileRepository = candidateProfileRepository;
     this.districtServiceImpl = districtServiceImpl;
@@ -66,7 +70,7 @@ public class CandidateProfileServiceImpl implements IProfileService {
             .gender(candidateProfileRequest.getGender())
             .education(candidateProfileRequest.getEducation())
             .bio(candidateProfileRequest.getBio())
-            .avatarUrl(null)
+            .avatarUrl(defaultCandidateAvatar)
             .province(province)
             .district(district)
             .account(account)
@@ -130,7 +134,7 @@ public class CandidateProfileServiceImpl implements IProfileService {
   @Override
   public void updateProfileImage(String accountId, MultipartFile image) {
     try {
-      String imgUrl = cloudinaryService.uploadFile(image);
+      String imgUrl = cloudinaryService.uploadImage(image);
       CandidateProfile candidateProfile =
           candidateProfileRepository
               .findByAccountId(UUID.fromString(accountId))

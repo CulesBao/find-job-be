@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @RequiredArgsConstructor
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfiguration {
   private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -45,7 +45,8 @@ public class SecurityConfiguration {
                         "api/auth/verify/**",
                         "/api/provinces",
                         "api/districts/**",
-                        "api/candidate-profile/**")
+                        "api/candidate-profile/**",
+                        "api/employer-profile/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated())
