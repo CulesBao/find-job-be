@@ -5,7 +5,7 @@ import com.findjobbe.findjobbe.mapper.request.LoginRequest;
 import com.findjobbe.findjobbe.mapper.request.RegisterRequest;
 import com.findjobbe.findjobbe.mapper.request.VerifyCodeRequest;
 import com.findjobbe.findjobbe.mapper.response.AbstractResponse;
-import com.findjobbe.findjobbe.service.IAuthService;
+import com.findjobbe.findjobbe.service.IAccountService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-  private final IAuthService authService;
+  private final IAccountService authService;
 
   @Autowired
-  public AuthController(IAuthService authService) {
+  public AuthController(IAccountService authService) {
     this.authService = authService;
   }
 

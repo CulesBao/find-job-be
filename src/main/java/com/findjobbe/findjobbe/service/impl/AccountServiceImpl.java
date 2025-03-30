@@ -8,7 +8,7 @@ import com.findjobbe.findjobbe.mapper.request.VerifyCodeRequest;
 import com.findjobbe.findjobbe.model.Account;
 import com.findjobbe.findjobbe.repository.AccountRepository;
 import com.findjobbe.findjobbe.security.JwtTokenManager;
-import com.findjobbe.findjobbe.service.IAuthService;
+import com.findjobbe.findjobbe.service.IAccountService;
 import com.findjobbe.findjobbe.service.IMailService;
 import com.findjobbe.findjobbe.utils.GenerateCode;
 import jakarta.mail.MessagingException;
@@ -22,7 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthServiceImpl implements IAuthService {
+public class AccountServiceImpl implements IAccountService {
   private final AccountRepository accountRepository;
   private final GenerateCode generateCode;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -31,7 +31,7 @@ public class AuthServiceImpl implements IAuthService {
   private final JwtTokenManager jwtTokenManager;
 
   @Autowired
-  public AuthServiceImpl(
+  public AccountServiceImpl(
       AccountRepository accountRepository,
       GenerateCode generateCode,
       BCryptPasswordEncoder bCryptPasswordEncoder,
@@ -98,5 +98,26 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     return jwtTokenManager.generateToken(account);
+  }
+
+  @Override
+  public Account getAccountById(String accountId) {
+    return accountRepository
+        .findById(UUID.fromString(accountId))
+        .orElseThrow(() -> new NotFoundException(MessageConstants.ACCOUNT_NOT_FOUND));
+  }
+
+  @Override
+  public void resetPassword(String accountId, String newPassword, String confirmPassword) {
+    if (!newPassword.equals(confirmPassword)) {
+      throw new BadRequestException(MessageConstants.PASSWORD_NOT_MATCH);
+    }
+    Account account = getAccountById(accountId);
+    if (bCryptPasswordEncoder.matches(newPassword, account.getPassword())) {
+      throw new ForbiddenException(MessageConstants.PASSWORD_MUST_BE_DIFFERENT);
+    }
+
+    account.setPassword(bCryptPasswordEncoder.encode(newPassword));
+    accountRepository.save(account);
   }
 }

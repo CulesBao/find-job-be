@@ -9,6 +9,7 @@ import com.findjobbe.findjobbe.mapper.dto.SocialLinkDto;
 import com.findjobbe.findjobbe.mapper.request.CandidateProfileRequest;
 import com.findjobbe.findjobbe.model.*;
 import com.findjobbe.findjobbe.repository.*;
+import com.findjobbe.findjobbe.service.IAccountService;
 import com.findjobbe.findjobbe.service.IFileService;
 import com.findjobbe.findjobbe.service.IProfileService;
 import jakarta.transaction.Transactional;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class CandidateProfileServiceImpl implements IProfileService {
+  private final IAccountService accountService;
   private final AccountRepository accountRepository;
   private final CandidateProfileRepository candidateProfileRepository;
   private final DistrictServiceImpl districtServiceImpl;
@@ -29,33 +31,32 @@ public class CandidateProfileServiceImpl implements IProfileService {
   private final ProvinceServiceImpl provinceServiceImpl;
   private final IFileService cloudinaryService;
 
-  @Value("${default-candidate-avatar")
+  @Value("${default-candidate-avatar}")
   private String defaultCandidateAvatar;
 
   @Autowired
   public CandidateProfileServiceImpl(
-      AccountRepository accountRepository,
+      IAccountService accountService,
       CandidateProfileRepository candidateProfileRepository,
       DistrictServiceImpl districtServiceImpl,
       SocialLinkRepository socialLinkRepository,
       ProvinceServiceImpl provinceServiceImpl,
-      IFileService cloudinaryService) {
-    this.accountRepository = accountRepository;
+      IFileService cloudinaryService,
+      AccountRepository accountRepository) {
+    this.accountService = accountService;
     this.candidateProfileRepository = candidateProfileRepository;
     this.districtServiceImpl = districtServiceImpl;
     this.socialLinkRepository = socialLinkRepository;
     this.provinceServiceImpl = provinceServiceImpl;
     this.cloudinaryService = cloudinaryService;
+    this.accountRepository = accountRepository;
   }
 
   @Override
   @Transactional
   public BaseProfile createProfile(String accountId, BaseProfile profileRequest) {
     CandidateProfileRequest candidateProfileRequest = (CandidateProfileRequest) profileRequest;
-    Account account =
-        accountRepository
-            .findById(UUID.fromString(accountId))
-            .orElseThrow(() -> new NotFoundException(MessageConstants.ACCOUNT_NOT_FOUND));
+    Account account = accountService.getAccountById(accountId);
     Province province =
         provinceServiceImpl.getProvinceByCode(candidateProfileRequest.getProvinceCode());
     District district =

@@ -17,4 +17,6 @@ public class MessageConstants {
   public static final String IMAGE_UPLOAD_FAILED = "image_upload_failed";
   public static final String PROFILE_ALREADY_EXISTS = "profile_already_exists";
   public static final String UNSUPPORTED_FILE_TYPE = "unsupported_file_type";
+  public static final String PASSWORD_NOT_MATCH = "password_not_match";
+  public static final String PASSWORD_MUST_BE_DIFFERENT = "password_must_be_different";
 }
