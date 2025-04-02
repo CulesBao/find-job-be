@@ -19,4 +19,10 @@ public class MessageConstants {
   public static final String UNSUPPORTED_FILE_TYPE = "unsupported_file_type";
   public static final String PASSWORD_NOT_MATCH = "password_not_match";
   public static final String PASSWORD_MUST_BE_DIFFERENT = "password_must_be_different";
+  public static final String EMPLOYER_NOT_FOUND = "employer_not_found";
+  public static final String MIN_SALARY_MUST_BE_LESS_THAN_MAX_SALARY =
+      "min_salary_must_be_less_than_max_salary";
+  public static final String JOB_NOT_FOUND = "job_not_found";
+  public static final String EXPIRED_AT_MUST_BE_IN_FUTURE = "expired_at_must_be_in_future";
+  public static final String NOT_AUTHORIZED_TO_UPDATE_JOB = "not_authorized_to_update_job";
 }

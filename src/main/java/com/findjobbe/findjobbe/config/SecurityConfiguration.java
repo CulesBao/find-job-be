@@ -40,13 +40,14 @@ public class SecurityConfiguration {
             request ->
                 request
                     .requestMatchers(
-                        "api/auth/register",
-                        "api/auth/login",
-                        "api/auth/verify/**",
+                        "/api/auth/register",
+                        "/api/auth/login",
+                        "/api/auth/verify/**",
                         "/api/provinces",
-                        "api/districts/**",
-                        "api/candidate-profile/**",
-                        "api/employer-profile/**")
+                        "/api/districts/**",
+                        "/api/candidate-profile/**",
+                        "/api/employer-profile/**",
+                        "/api/job/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated())

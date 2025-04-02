@@ -4,6 +4,6 @@ public enum Education {
     HIGH_SCHOOL,
     INTERMEDIATE,
     GRADUATION,
-    MASTER_GEGREE,
+    MASTER_DEGREE,
     BACHELOR_DEGREE
 }
