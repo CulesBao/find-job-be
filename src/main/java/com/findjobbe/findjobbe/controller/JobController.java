@@ -3,6 +3,7 @@ package com.findjobbe.findjobbe.controller;
 import com.findjobbe.findjobbe.config.CurrentUser;
 import com.findjobbe.findjobbe.mapper.dto.JobDto;
 import com.findjobbe.findjobbe.mapper.request.CreateJobRequest;
+import com.findjobbe.findjobbe.mapper.request.FilterJobRequest;
 import com.findjobbe.findjobbe.mapper.response.AbstractResponse;
 import com.findjobbe.findjobbe.model.CustomAccountDetails;
 import com.findjobbe.findjobbe.service.IJobService;
@@ -65,5 +66,16 @@ public class JobController {
                 customAccountDetails.getAccount().getEmployerProfile().getId().toString(),
                 page,
                 size)));
+  }
+
+  @PostMapping("/filter")
+  @PreAuthorize("hasRole('ROLE_CANDIDATE')")
+  public ResponseEntity<?> filterJobs(
+      @RequestBody @Valid FilterJobRequest filterJobRequest,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+    return ResponseEntity.ok(
+        new AbstractResponse(
+            "Filter jobs successfully", jobService.filterJobs(filterJobRequest, page, size)));
   }
 }

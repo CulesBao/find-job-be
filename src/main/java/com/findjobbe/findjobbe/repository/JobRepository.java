@@ -1,5 +1,6 @@
 package com.findjobbe.findjobbe.repository;
 
+import com.findjobbe.findjobbe.mapper.dto.FilterJobsDto;
 import com.findjobbe.findjobbe.mapper.dto.GetEmployerJobsDto;
 import com.findjobbe.findjobbe.model.Job;
 import java.util.UUID;
@@ -28,4 +29,43 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
       nativeQuery = true)
   Page<GetEmployerJobsDto[]> getAllEmployerJobsRaw(
       @Param("employerId") UUID employerId, Pageable pageable);
+
+  @Query(
+          value =
+                  "SELECT e.logo_url AS logoUrl, e.name, p.name_en AS location, j.title, "
+                          + " j.min_salary AS minSalary, j.max_salary AS maxSalary, j.currency, j.expired_at AS expiredAt "
+                          + " FROM employer_profile e "
+                          + " JOIN job j ON e.id = j.employer_id "
+                          + " JOIN provinces p ON e.province_id = p.code "
+                          + " WHERE (COALESCE(:title, '') = '' OR j.title LIKE CONCAT('%', :title, '%')) "
+                          + " AND (COALESCE(:provinceCode, '') = '' OR p.code = :provinceCode) "
+                          + " AND (COALESCE(:jobType, '') = '' OR j.job_type = :jobType) "
+                          + " AND (COALESCE(:education, '') = '' OR j.education = :education) "
+                          + " AND (COALESCE(:minSalary, 0) = 0 OR j.min_salary >= :minSalary) "
+                          + " AND (COALESCE(:maxSalary, 0) = 0 OR j.max_salary <= :maxSalary) "
+                          + " AND (COALESCE(:currency, '') = '' OR j.currency = :currency) "
+                          + " AND (COALESCE(:salaryType, '') = '' OR j.salary_type = :salaryType) ",
+          countQuery =
+                  "SELECT COUNT(*) FROM employer_profile e "
+                          + " JOIN job j ON e.id = j.employer_id "
+                          + " JOIN provinces p ON e.province_id = p.code "
+                          + " WHERE (COALESCE(:title, '') = '' OR j.title LIKE CONCAT('%', :title, '%')) "
+                          + " AND (COALESCE(:provinceCode, '') = '' OR p.code = :provinceCode) "
+                          + " AND (COALESCE(:jobType, '') = '' OR j.job_type = :jobType) "
+                          + " AND (COALESCE(:education, '') = '' OR j.education = :education) "
+                          + " AND (COALESCE(:minSalary, 0) = 0 OR j.min_salary >= :minSalary) "
+                          + " AND (COALESCE(:maxSalary, 0) = 0 OR j.max_salary <= :maxSalary) "
+                          + " AND (COALESCE(:currency, '') = '' OR j.currency = :currency) "
+                          + " AND (COALESCE(:salaryType, '') = '' OR j.salary_type = :salaryType) ",
+          nativeQuery = true)
+  Page<FilterJobsDto[]> filterJobs(
+      @Param("title") String title,
+      @Param("provinceCode") String provinceCode,
+      @Param("jobType") String jobType,
+      @Param("education") String education,
+      @Param("minSalary") Double minSalary,
+      @Param("maxSalary") Double maxSalary,
+      @Param("currency") String currency,
+      @Param("salaryType") String salaryType,
+      Pageable pageable);
 }

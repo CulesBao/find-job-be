@@ -3,8 +3,10 @@ package com.findjobbe.findjobbe.service.impl;
 import com.findjobbe.findjobbe.exception.ForbiddenException;
 import com.findjobbe.findjobbe.exception.MessageConstants;
 import com.findjobbe.findjobbe.exception.NotFoundException;
+import com.findjobbe.findjobbe.mapper.dto.FilterJobsDto;
 import com.findjobbe.findjobbe.mapper.dto.GetEmployerJobsDto;
 import com.findjobbe.findjobbe.mapper.request.CreateJobRequest;
+import com.findjobbe.findjobbe.mapper.request.FilterJobRequest;
 import com.findjobbe.findjobbe.model.EmployerProfile;
 import com.findjobbe.findjobbe.model.Job;
 import com.findjobbe.findjobbe.repository.EmployerProfileRepository;
@@ -21,7 +23,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JobServiceImpl implements IJobService {
   private final EmployerProfileRepository employerProfileRepository;
-  private JobRepository jobRepository;
+  private final JobRepository jobRepository;
 
   @Autowired
   public JobServiceImpl(
@@ -49,11 +51,9 @@ public class JobServiceImpl implements IJobService {
 
   @Override
   public Job getJobById(String jobId) {
-    Job job =
-        jobRepository
-            .findById(UUID.fromString(jobId))
-            .orElseThrow(() -> new NotFoundException(MessageConstants.JOB_NOT_FOUND));
-    return job;
+    return jobRepository
+        .findById(UUID.fromString(jobId))
+        .orElseThrow(() -> new NotFoundException(MessageConstants.JOB_NOT_FOUND));
   }
 
   @Override
@@ -66,7 +66,7 @@ public class JobServiceImpl implements IJobService {
         && createJobRequest.getExpiredAt().before(new Date())) {
       throw new ForbiddenException(MessageConstants.EXPIRED_AT_MUST_BE_IN_FUTURE);
     }
-    if (job.getEmployerProfile().getId().toString() != employerId)
+    if (job.getEmployerProfile().getId().toString().equals(employerId))
       throw new ForbiddenException(MessageConstants.NOT_AUTHORIZED_TO_UPDATE_JOB);
     job.update(createJobRequest);
     jobRepository.save(job);
@@ -75,8 +75,21 @@ public class JobServiceImpl implements IJobService {
   @Override
   public Page<GetEmployerJobsDto[]> getEmployerJobs(String employerId, int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
-    Page<GetEmployerJobsDto[]> paging =
-        jobRepository.getAllEmployerJobsRaw(UUID.fromString(employerId), pageable);
-    return paging;
+    return jobRepository.getAllEmployerJobsRaw(UUID.fromString(employerId), pageable);
+  }
+
+  @Override
+  public Page<FilterJobsDto[]> filterJobs(FilterJobRequest filterJobRequest, int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return jobRepository.filterJobs(
+        filterJobRequest.getTitle(),
+        filterJobRequest.getProvinceCode(),
+        filterJobRequest.getJobType(),
+        filterJobRequest.getEducation(),
+        filterJobRequest.getMinSalary(),
+        filterJobRequest.getMaxSalary(),
+        filterJobRequest.getCurrency(),
+        filterJobRequest.getSalaryType(),
+        pageable);
   }
 }
