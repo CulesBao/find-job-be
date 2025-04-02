@@ -25,4 +25,7 @@ public class MessageConstants {
   public static final String JOB_NOT_FOUND = "job_not_found";
   public static final String EXPIRED_AT_MUST_BE_IN_FUTURE = "expired_at_must_be_in_future";
   public static final String NOT_AUTHORIZED_TO_UPDATE_JOB = "not_authorized_to_update_job";
+  public static final String APPLICATION_NOT_FOUND = "application_not_found";
+  public static final String UNAUTHORIZED_ACCESS = "unauthorized_access";
+  public static final String APPLICATION_ALREADY_WITHDRAWN = "application_already_withdrawn";
 }

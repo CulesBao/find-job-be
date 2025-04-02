@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FilterJobsDto {
+public class GetCandidateAppliedJobs {
   private UUID id;
   private String logoUrl;
   private String name;
@@ -20,5 +20,6 @@ public class FilterJobsDto {
   private double minSalary;
   private double maxSalary;
   private String currency;
-  private Date expiredAt;
+  private Date createdAt;
+  private String jobProccess;
 }

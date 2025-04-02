@@ -11,14 +11,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FilterJobsDto {
+public class GetEmployerAppliedJobs {
   private UUID id;
-  private String logoUrl;
-  private String name;
-  private String location;
-  private String title;
-  private double minSalary;
-  private double maxSalary;
-  private String currency;
-  private Date expiredAt;
+  private String firstName;
+  private String lastName;
+  private String avatar_url;
+  private String education;
+  private Date createdAt;
+  private String jobProccess;
 }
