@@ -2,8 +2,8 @@ package com.findjobbe.findjobbe.repository;
 
 import com.findjobbe.findjobbe.mapper.dto.GetCandidateAppliedJobs;
 import com.findjobbe.findjobbe.mapper.dto.GetEmployerAppliedJobs;
-import com.findjobbe.findjobbe.mapper.dto.GetEmployerJobsDto;
 import com.findjobbe.findjobbe.model.Application;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,12 +32,12 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
               + " WHERE c.id = :candidateProfileId",
       countQuery =
           "SELECT COUNT(*) "
-                  + " FROM job j "
-                  + " JOIN application a ON j.id = a.job_id "
-                  + " JOIN employer_profile e ON j.employer_id = e.id "
-                  + " JOIN provinces p ON e.province_id = p.code "
-                  + " JOIN candidate_profile c ON a.candidate_profile_id = c.id "
-                  + " WHERE c.id = :candidateProfileId",
+              + " FROM job j "
+              + " JOIN application a ON j.id = a.job_id "
+              + " JOIN employer_profile e ON j.employer_id = e.id "
+              + " JOIN provinces p ON e.province_id = p.code "
+              + " JOIN candidate_profile c ON a.candidate_profile_id = c.id "
+              + " WHERE c.id = :candidateProfileId",
       nativeQuery = true)
   Page<GetCandidateAppliedJobs[]> findAllByCandidateProfileId(
       @Param("candidateProfileId") UUID candidateProfileId, Pageable pageable);
@@ -59,4 +59,6 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
       nativeQuery = true)
   Page<GetEmployerAppliedJobs[]> getEmployerAppliedJobs(
       @Param("employerId") UUID employerId, @Param("jobId") UUID jobId, Pageable pageable);
+
+  List<Application> findAllByJobId(UUID uuid);
 }

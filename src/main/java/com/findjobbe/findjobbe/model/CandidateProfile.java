@@ -52,7 +52,7 @@ public class CandidateProfile extends AbstractEntity {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidateProfile")
   private List<SocialLink> socialLinks;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "candidateProfile", cascade = CascadeType.ALL)
   private List<Application> applications;
 
   public void update(CandidateProfileRequest candidateProfileRequest) {

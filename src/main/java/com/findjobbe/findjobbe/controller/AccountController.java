@@ -2,7 +2,7 @@ package com.findjobbe.findjobbe.controller;
 
 import com.findjobbe.findjobbe.config.CurrentUser;
 import com.findjobbe.findjobbe.mapper.dto.AccountDto;
-import com.findjobbe.findjobbe.mapper.request.ResetPasswordDto;
+import com.findjobbe.findjobbe.mapper.request.ResetPasswordRequest;
 import com.findjobbe.findjobbe.mapper.response.AbstractResponse;
 import com.findjobbe.findjobbe.model.CustomAccountDetails;
 import com.findjobbe.findjobbe.service.IAccountService;
@@ -33,7 +33,7 @@ public class AccountController {
   @PutMapping("/reset-password")
   public ResponseEntity<?> resetPassword(
       @CurrentUser CustomAccountDetails currentUser,
-      @RequestBody @Valid ResetPasswordDto resetPasswordDto) {
+      @RequestBody @Valid ResetPasswordRequest resetPasswordDto) {
     accountService.resetPassword(
         currentUser.getAccount().getId().toString(),
         resetPasswordDto.getNewPassword(),

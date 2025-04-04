@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ResetPasswordDto {
+public class ResetPasswordRequest {
   @NotNull
   @Length(min = 8, max = 100)
   private String newPassword;

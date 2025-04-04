@@ -2,6 +2,7 @@ package com.findjobbe.findjobbe.controller;
 
 import com.findjobbe.findjobbe.config.CurrentUser;
 import com.findjobbe.findjobbe.exception.ForbiddenException;
+import com.findjobbe.findjobbe.mapper.request.SetApplicationsStatusRequest;
 import com.findjobbe.findjobbe.mapper.response.AbstractResponse;
 import com.findjobbe.findjobbe.model.CustomAccountDetails;
 import com.findjobbe.findjobbe.service.IApplicationService;
@@ -86,5 +87,18 @@ public class ApplicationController {
         new AbstractResponse(
             "Get application successfully",
             applicationService.getApplicationById(applicationId, currentUser)));
+  }
+
+  @PutMapping("/job/{jobId}")
+  @PreAuthorize("hasRole('ROLE_EMPLOYER')")
+  public ResponseEntity<?> updateApplicationStatus(
+      @PathVariable String jobId,
+      @RequestBody SetApplicationsStatusRequest setApplicationsStatusRequest,
+      @CurrentUser CustomAccountDetails currentUser) {
+    applicationService.updateApplicationStatus(
+        setApplicationsStatusRequest,
+        currentUser.getAccount().getEmployerProfile().getId().toString(),
+        jobId);
+    return ResponseEntity.ok(new AbstractResponse("Update application status successfully", null));
   }
 }

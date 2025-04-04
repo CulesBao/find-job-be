@@ -4,6 +4,7 @@ import com.findjobbe.findjobbe.exception.ForbiddenException;
 import com.findjobbe.findjobbe.mapper.dto.ApplicationDto;
 import com.findjobbe.findjobbe.mapper.dto.GetCandidateAppliedJobs;
 import com.findjobbe.findjobbe.mapper.dto.GetEmployerAppliedJobs;
+import com.findjobbe.findjobbe.mapper.request.SetApplicationsStatusRequest;
 import com.findjobbe.findjobbe.model.CustomAccountDetails;
 import java.io.IOException;
 import org.springframework.data.domain.Page;
@@ -22,4 +23,7 @@ public interface IApplicationService {
 
   ApplicationDto getApplicationById(
       String applicationId, CustomAccountDetails customAccountDetails);
+
+  void updateApplicationStatus(
+      SetApplicationsStatusRequest setApplicationsStatusRequest, String employerId, String jobId);
 }

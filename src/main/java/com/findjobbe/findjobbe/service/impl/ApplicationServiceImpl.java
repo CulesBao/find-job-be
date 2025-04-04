@@ -8,16 +8,22 @@ import com.findjobbe.findjobbe.mapper.dto.ApplicationDto;
 import com.findjobbe.findjobbe.mapper.dto.CandidateProfileDto;
 import com.findjobbe.findjobbe.mapper.dto.GetCandidateAppliedJobs;
 import com.findjobbe.findjobbe.mapper.dto.GetEmployerAppliedJobs;
+import com.findjobbe.findjobbe.mapper.request.SetApplicationsStatusRequest;
 import com.findjobbe.findjobbe.model.Application;
 import com.findjobbe.findjobbe.model.CandidateProfile;
 import com.findjobbe.findjobbe.model.CustomAccountDetails;
+import com.findjobbe.findjobbe.model.Job;
 import com.findjobbe.findjobbe.repository.ApplicationRepository;
 import com.findjobbe.findjobbe.repository.CandidateProfileRepository;
 import com.findjobbe.findjobbe.service.IApplicationService;
 import com.findjobbe.findjobbe.service.IFileService;
 import com.findjobbe.findjobbe.service.IJobService;
+import jakarta.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,7 +63,7 @@ public class ApplicationServiceImpl implements IApplicationService {
             coverLetter,
             false,
             candidateProfile,
-            jobService.getJobById(jobId.toString()),
+            jobService.getJobById(jobId),
             JobProccess.APPLICATION_SUBMITTED);
     applicationRepository.save(application);
   }
@@ -111,5 +117,34 @@ public class ApplicationServiceImpl implements IApplicationService {
         candidateProfileDto,
         application.getCreatedAt(),
         application.getUpdatedAt());
+  }
+
+  @Override
+  @Transactional
+  public void updateApplicationStatus(
+      SetApplicationsStatusRequest setApplicationsStatusRequest, String employerId, String jobId) {
+    Job job = jobService.getJobById(jobId);
+    if (!job.getEmployerProfile().getId().equals(UUID.fromString(employerId))) {
+      throw new ForbiddenException(MessageConstants.UNAUTHORIZED_ACCESS);
+    }
+    List<Application> applications = applicationRepository.findAllByJobId(UUID.fromString(jobId));
+    if (applications.isEmpty()) {
+      throw new NotFoundException(MessageConstants.APPLICATION_NOT_FOUND);
+    }
+    Map<UUID, String> applicationStatusMap =
+        setApplicationsStatusRequest.getApplications().stream()
+            .collect(
+                Collectors.toMap(
+                    SetApplicationsStatusRequest.SetApplicationStatus::getApplicationId,
+                    SetApplicationsStatusRequest.SetApplicationStatus::getStatus));
+
+    for (Application application : applications) {
+      String status = applicationStatusMap.get(application.getId());
+      if (application.getProccess() != JobProccess.WITHDRAWN && status != null) {
+        application.setProccess(JobProccess.valueOf(status));
+      }
+    }
+
+    applicationRepository.saveAll(applications);
   }
 }
