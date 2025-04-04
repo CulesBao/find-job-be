@@ -3,7 +3,9 @@ package com.findjobbe.findjobbe.model;
 import com.findjobbe.findjobbe.mapper.request.EmployerProfileRequest;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.*;
 
 @Entity
@@ -45,6 +47,13 @@ public class EmployerProfile extends AbstractEntity {
 
   @OneToMany(mappedBy = "employerProfile", cascade = CascadeType.ALL)
   private List<Job> jobs;
+  @ManyToMany
+  @JoinTable(
+          name = "saved_candidates",
+          joinColumns = @JoinColumn(name = "employer_id"),
+          inverseJoinColumns = @JoinColumn(name = "candidate_id")
+  )
+  private Set<CandidateProfile> savedCandidates = new HashSet<>();
 
   public String getLogoUrl() {
     return logo_url;

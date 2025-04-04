@@ -4,7 +4,9 @@ import com.findjobbe.findjobbe.enums.Education;
 import com.findjobbe.findjobbe.mapper.request.CandidateProfileRequest;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.*;
 
 @Entity
@@ -54,6 +56,13 @@ public class CandidateProfile extends AbstractEntity {
 
   @OneToMany(mappedBy = "candidateProfile", cascade = CascadeType.ALL)
   private List<Application> applications;
+
+  @ManyToMany
+  @JoinTable(
+      name = "saved_employers",
+      joinColumns = @JoinColumn(name = "candidate_id"),
+      inverseJoinColumns = @JoinColumn(name = "employer_id"))
+  private Set<EmployerProfile> savedEmployers = new HashSet<>();
 
   public void update(CandidateProfileRequest candidateProfileRequest) {
     this.firstName = candidateProfileRequest.getFirstName();

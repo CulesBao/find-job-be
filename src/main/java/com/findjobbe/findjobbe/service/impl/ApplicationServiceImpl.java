@@ -61,7 +61,6 @@ public class ApplicationServiceImpl implements IApplicationService {
         new Application(
             fileService.uploadFile(file),
             coverLetter,
-            false,
             candidateProfile,
             jobService.getJobById(jobId),
             JobProccess.APPLICATION_SUBMITTED);
