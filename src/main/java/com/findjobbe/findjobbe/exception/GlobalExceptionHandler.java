@@ -1,5 +1,6 @@
 package com.findjobbe.findjobbe.exception;
 
+import com.findjobbe.findjobbe.mapper.response.AbstractResponse;
 import java.util.Locale;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +94,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         messageSource.getMessage(messageKey, null, error.getDefaultMessage(), Locale.getDefault());
 
     return new ResponseEntity<>(new ErrorResponse(errorMessage, errorCode), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<?> handleException(Exception e) {
+    System.out.println(e.getMessage());
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(new AbstractResponse("Internal server error", null));
   }
 }
