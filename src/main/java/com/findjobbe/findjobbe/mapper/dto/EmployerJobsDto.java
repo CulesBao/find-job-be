@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetEmployerJobsDto {
+public class EmployerJobsDto {
   private UUID id;
   private String title;
   private String jobType;

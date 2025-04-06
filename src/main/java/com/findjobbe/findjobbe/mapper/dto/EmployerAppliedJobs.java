@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetEmployerAppliedJobs {
+public class EmployerAppliedJobs {
   private UUID id;
   private String firstName;
   private String lastName;

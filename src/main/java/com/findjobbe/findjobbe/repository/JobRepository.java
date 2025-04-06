@@ -1,7 +1,7 @@
 package com.findjobbe.findjobbe.repository;
 
 import com.findjobbe.findjobbe.mapper.dto.FilterJobsDto;
-import com.findjobbe.findjobbe.mapper.dto.GetEmployerJobsDto;
+import com.findjobbe.findjobbe.mapper.dto.EmployerJobsDto;
 import com.findjobbe.findjobbe.model.Job;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -27,7 +27,7 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
                   + "JOIN job j ON e.id = j.employer_id "
                   + "WHERE e.id = :employerId",
       nativeQuery = true)
-  Page<GetEmployerJobsDto[]> getAllEmployerJobsRaw(
+  Page<EmployerJobsDto[]> getAllEmployerJobsRaw(
       @Param("employerId") UUID employerId, Pageable pageable);
 
   @Query(

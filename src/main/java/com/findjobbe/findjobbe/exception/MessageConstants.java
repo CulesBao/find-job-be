@@ -28,4 +28,6 @@ public class MessageConstants {
   public static final String APPLICATION_NOT_FOUND = "application_not_found";
   public static final String UNAUTHORIZED_ACCESS = "unauthorized_access";
   public static final String APPLICATION_ALREADY_WITHDRAWN = "application_already_withdrawn";
+  public static final String CANDIDATE_NOT_FOLLOWING = "candidate_not_following";
+  public static final String EMPLOYER_NOT_FOLLOWING = "employer_not_following";
 }

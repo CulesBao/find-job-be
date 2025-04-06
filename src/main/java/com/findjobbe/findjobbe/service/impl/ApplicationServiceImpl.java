@@ -6,8 +6,8 @@ import com.findjobbe.findjobbe.exception.MessageConstants;
 import com.findjobbe.findjobbe.exception.NotFoundException;
 import com.findjobbe.findjobbe.mapper.dto.ApplicationDto;
 import com.findjobbe.findjobbe.mapper.dto.CandidateProfileDto;
-import com.findjobbe.findjobbe.mapper.dto.GetCandidateAppliedJobs;
-import com.findjobbe.findjobbe.mapper.dto.GetEmployerAppliedJobs;
+import com.findjobbe.findjobbe.mapper.dto.CandidateAppliedJobs;
+import com.findjobbe.findjobbe.mapper.dto.EmployerAppliedJobs;
 import com.findjobbe.findjobbe.mapper.request.SetApplicationsStatusRequest;
 import com.findjobbe.findjobbe.model.Application;
 import com.findjobbe.findjobbe.model.CandidateProfile;
@@ -84,7 +84,7 @@ public class ApplicationServiceImpl implements IApplicationService {
   }
 
   @Override
-  public Page<GetCandidateAppliedJobs[]> getCandidateAppliedJobs(
+  public Page<CandidateAppliedJobs[]> getCandidateAppliedJobs(
       String candidateId, int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
     return applicationRepository.findAllByCandidateProfileId(
@@ -92,7 +92,7 @@ public class ApplicationServiceImpl implements IApplicationService {
   }
 
   @Override
-  public Page<GetEmployerAppliedJobs[]> getEmployerAppliedJobs(
+  public Page<EmployerAppliedJobs[]> getEmployerAppliedJobs(
       String employerId, String jobId, int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
     return applicationRepository.getEmployerAppliedJobs(

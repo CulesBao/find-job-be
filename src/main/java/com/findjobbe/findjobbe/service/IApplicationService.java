@@ -2,8 +2,8 @@ package com.findjobbe.findjobbe.service;
 
 import com.findjobbe.findjobbe.exception.ForbiddenException;
 import com.findjobbe.findjobbe.mapper.dto.ApplicationDto;
-import com.findjobbe.findjobbe.mapper.dto.GetCandidateAppliedJobs;
-import com.findjobbe.findjobbe.mapper.dto.GetEmployerAppliedJobs;
+import com.findjobbe.findjobbe.mapper.dto.CandidateAppliedJobs;
+import com.findjobbe.findjobbe.mapper.dto.EmployerAppliedJobs;
 import com.findjobbe.findjobbe.mapper.request.SetApplicationsStatusRequest;
 import com.findjobbe.findjobbe.model.CustomAccountDetails;
 import java.io.IOException;
@@ -16,9 +16,9 @@ public interface IApplicationService {
 
   void withdrawApplication(String candidateId, String applicationId);
 
-  Page<GetCandidateAppliedJobs[]> getCandidateAppliedJobs(String candidateId, int page, int size);
+  Page<CandidateAppliedJobs[]> getCandidateAppliedJobs(String candidateId, int page, int size);
 
-  Page<GetEmployerAppliedJobs[]> getEmployerAppliedJobs(
+  Page<EmployerAppliedJobs[]> getEmployerAppliedJobs(
       String employerId, String jobId, int page, int size);
 
   ApplicationDto getApplicationById(

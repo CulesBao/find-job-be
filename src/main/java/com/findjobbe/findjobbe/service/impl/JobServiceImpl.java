@@ -4,7 +4,7 @@ import com.findjobbe.findjobbe.exception.ForbiddenException;
 import com.findjobbe.findjobbe.exception.MessageConstants;
 import com.findjobbe.findjobbe.exception.NotFoundException;
 import com.findjobbe.findjobbe.mapper.dto.FilterJobsDto;
-import com.findjobbe.findjobbe.mapper.dto.GetEmployerJobsDto;
+import com.findjobbe.findjobbe.mapper.dto.EmployerJobsDto;
 import com.findjobbe.findjobbe.mapper.request.CreateJobRequest;
 import com.findjobbe.findjobbe.mapper.request.FilterJobRequest;
 import com.findjobbe.findjobbe.model.EmployerProfile;
@@ -73,7 +73,7 @@ public class JobServiceImpl implements IJobService {
   }
 
   @Override
-  public Page<GetEmployerJobsDto[]> getEmployerJobs(String employerId, int page, int size) {
+  public Page<EmployerJobsDto[]> getEmployerJobs(String employerId, int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
     return jobRepository.getAllEmployerJobsRaw(UUID.fromString(employerId), pageable);
   }

@@ -1,7 +1,7 @@
 package com.findjobbe.findjobbe.repository;
 
-import com.findjobbe.findjobbe.mapper.dto.GetCandidateAppliedJobs;
-import com.findjobbe.findjobbe.mapper.dto.GetEmployerAppliedJobs;
+import com.findjobbe.findjobbe.mapper.dto.CandidateAppliedJobs;
+import com.findjobbe.findjobbe.mapper.dto.EmployerAppliedJobs;
 import com.findjobbe.findjobbe.model.Application;
 import java.util.List;
 import java.util.UUID;
@@ -39,7 +39,7 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
               + " JOIN candidate_profile c ON a.candidate_profile_id = c.id "
               + " WHERE c.id = :candidateProfileId",
       nativeQuery = true)
-  Page<GetCandidateAppliedJobs[]> findAllByCandidateProfileId(
+  Page<CandidateAppliedJobs[]> findAllByCandidateProfileId(
       @Param("candidateProfileId") UUID candidateProfileId, Pageable pageable);
 
   @Query(
@@ -57,7 +57,7 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
               + " JOIN employer_profile e ON j.employer_id = e.id"
               + " WHERE e.id = :employerId AND j.id = :jobId",
       nativeQuery = true)
-  Page<GetEmployerAppliedJobs[]> getEmployerAppliedJobs(
+  Page<EmployerAppliedJobs[]> getEmployerAppliedJobs(
       @Param("employerId") UUID employerId, @Param("jobId") UUID jobId, Pageable pageable);
 
   List<Application> findAllByJobId(UUID uuid);
