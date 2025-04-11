@@ -5,6 +5,7 @@ import com.findjobbe.findjobbe.mapper.dto.AccountDto;
 import com.findjobbe.findjobbe.mapper.request.LoginRequest;
 import com.findjobbe.findjobbe.mapper.request.RegisterRequest;
 import com.findjobbe.findjobbe.mapper.request.VerifyCodeRequest;
+import com.findjobbe.findjobbe.mapper.response.LoginResponse;
 import com.findjobbe.findjobbe.model.Account;
 import com.findjobbe.findjobbe.repository.AccountRepository;
 import com.findjobbe.findjobbe.security.JwtTokenManager;
@@ -81,7 +82,7 @@ public class AccountServiceImpl implements IAccountService {
   }
 
   @Override
-  public String login(LoginRequest loginRequest) {
+  public LoginResponse login(LoginRequest loginRequest) {
     Account account =
         accountRepository
             .findByEmailAndIsActive(loginRequest.getEmail(), true)
@@ -97,7 +98,10 @@ public class AccountServiceImpl implements IAccountService {
       throw new UnauthorizedException(MessageConstants.LOGIN_FAILED);
     }
 
-    return jwtTokenManager.generateToken(account);
+    return new LoginResponse(
+        jwtTokenManager.generateToken(account),
+        new AccountDto(account),
+        account.getEmployerProfile() == null && account.getCandidateProfile() == null);
   }
 
   @Override

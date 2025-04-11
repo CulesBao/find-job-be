@@ -4,6 +4,7 @@ import com.findjobbe.findjobbe.mapper.dto.AccountDto;
 import com.findjobbe.findjobbe.mapper.request.LoginRequest;
 import com.findjobbe.findjobbe.mapper.request.RegisterRequest;
 import com.findjobbe.findjobbe.mapper.request.VerifyCodeRequest;
+import com.findjobbe.findjobbe.mapper.response.LoginResponse;
 import com.findjobbe.findjobbe.model.Account;
 import jakarta.mail.MessagingException;
 
@@ -12,7 +13,7 @@ public interface IAccountService {
 
   void verifyCode(String accountId, VerifyCodeRequest verifyCodeRequest);
 
-  String login(LoginRequest loginRequest);
+  LoginResponse login(LoginRequest loginRequest);
 
   Account getAccountById(String accountId);
 
