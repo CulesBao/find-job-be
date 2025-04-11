@@ -18,15 +18,25 @@ public class AccountDto {
   private boolean isActive;
   private String provider;
   private String role;
+  private CandidateProfileDto candidateProfile;
+  private EmployerProfileDto employerProfile;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
-  @Builder
+
   public AccountDto(Account account) {
     this.id = account.getId();
     this.email = account.getEmail();
     this.isActive = account.isActive();
     this.provider = String.valueOf(account.getProvider());
     this.role = String.valueOf(account.getRole());
+    this.candidateProfile =
+        (account.getCandidateProfile() != null)
+            ? new CandidateProfileDto(account.getCandidateProfile())
+            : null;
+    this.employerProfile =
+        (account.getEmployerProfile() != null)
+            ? new EmployerProfileDto(account.getEmployerProfile())
+            : null;
     this.createdAt = account.getCreatedAt();
     this.updatedAt = account.getUpdatedAt();
   }
