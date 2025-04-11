@@ -100,6 +100,7 @@ public class AccountServiceImpl implements IAccountService {
 
     return new LoginResponse(
         jwtTokenManager.generateToken(account),
+        new AccountDto(account),
         account.getEmployerProfile() == null && account.getCandidateProfile() == null);
   }
 
