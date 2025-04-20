@@ -46,10 +46,10 @@ public class JobController {
   @PreAuthorize("hasRole('ROLE_EMPLOYER')")
   public ResponseEntity<?> updateJob(
       @PathVariable String jobId,
-      @RequestBody @Valid CreateJobRequest createJobRequest,
+      @RequestBody @Valid CreateJobRequest updateJobResquest,
       @CurrentUser CustomAccountDetails currentUser) {
     jobService.updateJob(
-        currentUser.getAccount().getEmployerProfile().getId().toString(), jobId, createJobRequest);
+        currentUser.getAccount().getEmployerProfile().getId().toString(), jobId, updateJobResquest);
     return ResponseEntity.ok(new AbstractResponse("Update job successfully", null));
   }
 

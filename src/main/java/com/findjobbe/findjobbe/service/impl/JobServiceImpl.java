@@ -66,7 +66,7 @@ public class JobServiceImpl implements IJobService {
         && createJobRequest.getExpiredAt().before(new Date())) {
       throw new ForbiddenException(MessageConstants.EXPIRED_AT_MUST_BE_IN_FUTURE);
     }
-    if (job.getEmployerProfile().getId().toString().equals(employerId))
+    if (!job.getEmployerProfile().getId().toString().equals(employerId))
       throw new ForbiddenException(MessageConstants.NOT_AUTHORIZED_TO_UPDATE_JOB);
     job.update(createJobRequest);
     jobRepository.save(job);

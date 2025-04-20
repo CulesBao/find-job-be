@@ -26,6 +26,7 @@ public class JobDto {
   private Currency currency;
   private SalaryType salaryType;
   private Education education;
+  private String employerId;
   private String employerName;
   private String employerLogoUrl;
   private Date expiredAt;
@@ -43,6 +44,7 @@ public class JobDto {
     this.currency = job.getCurrency();
     this.salaryType = job.getSalaryType();
     this.education = job.getEducation();
+    this.employerId = job.getEmployerProfile().getId().toString();
     this.employerName = job.getEmployerProfile().getName();
     this.employerLogoUrl = job.getEmployerProfile().getLogoUrl();
     this.expiredAt = job.getExpiredAt();
