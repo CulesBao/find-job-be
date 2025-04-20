@@ -3,6 +3,7 @@ package com.findjobbe.findjobbe.service;
 import com.findjobbe.findjobbe.mapper.dto.AccountDto;
 import com.findjobbe.findjobbe.mapper.request.LoginRequest;
 import com.findjobbe.findjobbe.mapper.request.RegisterRequest;
+import com.findjobbe.findjobbe.mapper.request.ResetPasswordRequest;
 import com.findjobbe.findjobbe.mapper.request.VerifyCodeRequest;
 import com.findjobbe.findjobbe.mapper.response.LoginResponse;
 import com.findjobbe.findjobbe.model.Account;
@@ -17,5 +18,5 @@ public interface IAccountService {
 
   Account getAccountById(String accountId);
 
-  void resetPassword(String accountId, String newPassword, String confirmPassword);
+  void resetPassword(String accountId, ResetPasswordRequest resetPasswordRequest);
 }

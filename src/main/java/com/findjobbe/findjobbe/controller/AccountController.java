@@ -34,10 +34,7 @@ public class AccountController {
   public ResponseEntity<?> resetPassword(
       @CurrentUser CustomAccountDetails currentUser,
       @RequestBody @Valid ResetPasswordRequest resetPasswordDto) {
-    accountService.resetPassword(
-        currentUser.getAccount().getId().toString(),
-        resetPasswordDto.getNewPassword(),
-        resetPasswordDto.getConfirmPassword());
+    accountService.resetPassword(currentUser.getAccount().getId().toString(), resetPasswordDto);
     return ResponseEntity.ok(new AbstractResponse("Reset password successfully", null));
   }
 }

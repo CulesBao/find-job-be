@@ -61,7 +61,8 @@ public class SecurityConfiguration {
                         "api/districts/**",
                         "api/candidate-profile/**",
                         "api/employer-profile/**",
-                        "api/job/{jobId}")
+                        "api/job/{jobId}",
+                        "api/job/filter")
                     .permitAll()
                     .anyRequest()
                     .authenticated())

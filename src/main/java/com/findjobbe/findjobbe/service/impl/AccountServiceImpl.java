@@ -4,6 +4,7 @@ import com.findjobbe.findjobbe.exception.*;
 import com.findjobbe.findjobbe.mapper.dto.AccountDto;
 import com.findjobbe.findjobbe.mapper.request.LoginRequest;
 import com.findjobbe.findjobbe.mapper.request.RegisterRequest;
+import com.findjobbe.findjobbe.mapper.request.ResetPasswordRequest;
 import com.findjobbe.findjobbe.mapper.request.VerifyCodeRequest;
 import com.findjobbe.findjobbe.mapper.response.LoginResponse;
 import com.findjobbe.findjobbe.model.Account;
@@ -112,16 +113,19 @@ public class AccountServiceImpl implements IAccountService {
   }
 
   @Override
-  public void resetPassword(String accountId, String newPassword, String confirmPassword) {
-    if (!newPassword.equals(confirmPassword)) {
+  public void resetPassword(String accountId, ResetPasswordRequest resetPasswordRequest) {
+    if (!resetPasswordRequest.getNewPassword().equals(resetPasswordRequest.getConfirmPassword())) {
       throw new BadRequestException(MessageConstants.PASSWORD_NOT_MATCH);
     }
     Account account = getAccountById(accountId);
-    if (bCryptPasswordEncoder.matches(newPassword, account.getPassword())) {
+    if (!bCryptPasswordEncoder.matches(resetPasswordRequest.getOldPassword(), account.getPassword())) {
+      throw new BadRequestException(MessageConstants.OLD_PASSWORD_NOT_MATCH);
+    }
+    if (bCryptPasswordEncoder.matches(resetPasswordRequest.getNewPassword(), account.getPassword())) {
       throw new ForbiddenException(MessageConstants.PASSWORD_MUST_BE_DIFFERENT);
     }
 
-    account.setPassword(bCryptPasswordEncoder.encode(newPassword));
+    account.setPassword(bCryptPasswordEncoder.encode(resetPasswordRequest.getNewPassword()));
     accountRepository.save(account);
   }
 }

@@ -69,7 +69,6 @@ public class JobController {
   }
 
   @PostMapping("/filter")
-  @PreAuthorize("hasRole('ROLE_CANDIDATE')")
   public ResponseEntity<?> filterJobs(
       @RequestBody @Valid FilterJobRequest filterJobRequest,
       @RequestParam(defaultValue = "0") int page,

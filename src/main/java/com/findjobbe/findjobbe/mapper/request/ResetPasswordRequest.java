@@ -11,6 +11,9 @@ import org.hibernate.validator.constraints.Length;
 @AllArgsConstructor
 public class ResetPasswordRequest {
   @NotNull
+  @Length(min = 6)
+  private String oldPassword;
+  @NotNull
   @Length(min = 8, max = 100)
   private String newPassword;
 

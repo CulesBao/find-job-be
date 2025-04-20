@@ -30,4 +30,5 @@ public class MessageConstants {
   public static final String APPLICATION_ALREADY_WITHDRAWN = "application_already_withdrawn";
   public static final String CANDIDATE_NOT_FOLLOWING = "candidate_not_following";
   public static final String EMPLOYER_NOT_FOLLOWING = "employer_not_following";
+  public static final String OLD_PASSWORD_NOT_MATCH = "old_password_not_match";
 }
