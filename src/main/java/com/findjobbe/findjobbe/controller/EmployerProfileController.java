@@ -85,6 +85,9 @@ public class EmployerProfileController {
       @RequestParam(value = "page", defaultValue = "0") int page,
       @RequestParam(value = "size", defaultValue = "10") int size) {
     return ResponseEntity.ok(
-        profileService.filterProfiles(new FilterEmployerRequest(name, provinceCode), page, size));
+        new AbstractResponse(
+            "Filter employers successfully",
+            profileService.filterProfiles(
+                new FilterEmployerRequest(name, provinceCode), page, size)));
   }
 }
