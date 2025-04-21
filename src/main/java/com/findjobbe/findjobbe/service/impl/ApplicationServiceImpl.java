@@ -5,8 +5,8 @@ import com.findjobbe.findjobbe.exception.ForbiddenException;
 import com.findjobbe.findjobbe.exception.MessageConstants;
 import com.findjobbe.findjobbe.exception.NotFoundException;
 import com.findjobbe.findjobbe.mapper.dto.ApplicationDto;
-import com.findjobbe.findjobbe.mapper.dto.CandidateProfileDto;
 import com.findjobbe.findjobbe.mapper.dto.CandidateAppliedJobs;
+import com.findjobbe.findjobbe.mapper.dto.CandidateProfileDto;
 import com.findjobbe.findjobbe.mapper.dto.EmployerAppliedJobs;
 import com.findjobbe.findjobbe.mapper.request.SetApplicationsStatusRequest;
 import com.findjobbe.findjobbe.model.Application;
@@ -20,6 +20,9 @@ import com.findjobbe.findjobbe.service.IFileService;
 import com.findjobbe.findjobbe.service.IJobService;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -57,12 +60,18 @@ public class ApplicationServiceImpl implements IApplicationService {
         candidateProfileRepository
             .findById(UUID.fromString(candidateId))
             .orElseThrow(() -> new NotFoundException(MessageConstants.PROFILE_NOT_FOUND));
+    Job job = jobService.getJobById(jobId);
+    Date expiredAt = job.getExpiredAt();
+    LocalDate expiredAtDate = expiredAt.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+    if (expiredAtDate.isBefore(LocalDate.now()))
+      throw new ForbiddenException(MessageConstants.JOB_IS_EXPIRED);
     Application application =
         new Application(
             fileService.uploadFile(file),
             coverLetter,
             candidateProfile,
-            jobService.getJobById(jobId),
+            job,
             JobProccess.APPLICATION_SUBMITTED);
     applicationRepository.save(application);
   }

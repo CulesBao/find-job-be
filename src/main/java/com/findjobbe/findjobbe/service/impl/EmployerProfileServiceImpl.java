@@ -6,8 +6,10 @@ import com.findjobbe.findjobbe.exception.MessageConstants;
 import com.findjobbe.findjobbe.exception.NotFoundException;
 import com.findjobbe.findjobbe.mapper.dto.BaseProfile;
 import com.findjobbe.findjobbe.mapper.dto.EmployerProfileDto;
+import com.findjobbe.findjobbe.mapper.dto.FilterEmployerDto;
 import com.findjobbe.findjobbe.mapper.dto.SocialLinkDto;
 import com.findjobbe.findjobbe.mapper.request.EmployerProfileRequest;
+import com.findjobbe.findjobbe.mapper.request.FilterEmployerRequest;
 import com.findjobbe.findjobbe.model.*;
 import com.findjobbe.findjobbe.repository.AccountRepository;
 import com.findjobbe.findjobbe.repository.EmployerProfileRepository;
@@ -20,6 +22,9 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -146,5 +151,13 @@ public class EmployerProfileServiceImpl implements IProfileService {
     } catch (Exception e) {
       throw new BadRequestException(MessageConstants.IMAGE_UPLOAD_FAILED);
     }
+  }
+
+  @Override
+  public Page<FilterEmployerDto[]> filterProfiles(BaseProfile filters, int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    FilterEmployerRequest filterEmployerRequest = (FilterEmployerRequest) filters;
+    return employerProfileRepository.filterEmployer(
+        filterEmployerRequest.getName(), filterEmployerRequest.getProvinceCode(), pageable);
   }
 }

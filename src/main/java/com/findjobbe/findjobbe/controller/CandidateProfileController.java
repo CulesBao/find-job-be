@@ -5,10 +5,12 @@ import com.findjobbe.findjobbe.enums.Role;
 import com.findjobbe.findjobbe.factory.ProfileServiceFactory;
 import com.findjobbe.findjobbe.mapper.dto.CandidateProfileDto;
 import com.findjobbe.findjobbe.mapper.request.CandidateProfileRequest;
+import com.findjobbe.findjobbe.mapper.request.FilterCandidateRequest;
 import com.findjobbe.findjobbe.mapper.request.SocialLinkRequest;
 import com.findjobbe.findjobbe.mapper.response.AbstractResponse;
 import com.findjobbe.findjobbe.model.CustomAccountDetails;
 import com.findjobbe.findjobbe.service.IProfileService;
+import com.findjobbe.findjobbe.service.impl.CandidateProfileServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +23,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/candidate-profile")
 public class CandidateProfileController {
   private final IProfileService profileService;
+  private final CandidateProfileServiceImpl candidateProfileServiceImpl;
 
   @Autowired
-  public CandidateProfileController(ProfileServiceFactory profileServiceFactory) {
+  public CandidateProfileController(
+      ProfileServiceFactory profileServiceFactory,
+      CandidateProfileServiceImpl candidateProfileServiceImpl) {
     this.profileService = profileServiceFactory.getProfileService(Role.CANDIDATE);
+    this.candidateProfileServiceImpl = candidateProfileServiceImpl;
   }
 
   @PostMapping("/")
@@ -72,5 +78,23 @@ public class CandidateProfileController {
       @RequestParam("avatar") MultipartFile avatar, @CurrentUser CustomAccountDetails currentUser) {
     profileService.updateProfileImage(currentUser.getAccount().getId().toString(), avatar);
     return ResponseEntity.ok(new AbstractResponse("Avatar updated successfully", null));
+  }
+
+  @GetMapping("/filter")
+  public ResponseEntity<?> filterCandidate(
+      @RequestParam(value = "firstName", required = false) String firstName,
+      @RequestParam(value = "lastName", required = false) String lastName,
+      @RequestParam(value = "provinceCode", required = false) String provinceCode,
+      @RequestParam(value = "education", required = false) String education,
+      @RequestParam(value = "gender", required = false) String gender,
+      @RequestParam(value = "page", defaultValue = "0") int page,
+      @RequestParam(value = "size", defaultValue = "10") int size) {
+    return ResponseEntity.ok(
+        new AbstractResponse(
+            "Filtered candidates successfully",
+            candidateProfileServiceImpl.filterProfiles(
+                new FilterCandidateRequest(firstName, lastName, provinceCode, education, gender),
+                page,
+                size)));
   }
 }

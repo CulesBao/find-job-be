@@ -5,6 +5,7 @@ import com.findjobbe.findjobbe.enums.Role;
 import com.findjobbe.findjobbe.factory.ProfileServiceFactory;
 import com.findjobbe.findjobbe.mapper.dto.EmployerProfileDto;
 import com.findjobbe.findjobbe.mapper.request.EmployerProfileRequest;
+import com.findjobbe.findjobbe.mapper.request.FilterEmployerRequest;
 import com.findjobbe.findjobbe.mapper.request.SocialLinkRequest;
 import com.findjobbe.findjobbe.mapper.response.AbstractResponse;
 import com.findjobbe.findjobbe.model.CustomAccountDetails;
@@ -75,5 +76,15 @@ public class EmployerProfileController {
       @RequestParam("logo") MultipartFile logo, @CurrentUser CustomAccountDetails currentUser) {
     profileService.updateProfileImage(currentUser.getAccount().getId().toString(), logo);
     return ResponseEntity.ok(new AbstractResponse("Logo updated successfully", null));
+  }
+
+  @GetMapping("/filter")
+  public ResponseEntity<?> filterEmployer(
+      @RequestParam(value = "name", required = false) String name,
+      @RequestParam(value = "provinceCode", required = false) String provinceCode,
+      @RequestParam(value = "page", defaultValue = "0") int page,
+      @RequestParam(value = "size", defaultValue = "10") int size) {
+    return ResponseEntity.ok(
+        profileService.filterProfiles(new FilterEmployerRequest(name, provinceCode), page, size));
   }
 }

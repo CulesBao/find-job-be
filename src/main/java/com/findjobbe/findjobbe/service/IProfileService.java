@@ -3,6 +3,7 @@ package com.findjobbe.findjobbe.service;
 import com.findjobbe.findjobbe.mapper.dto.BaseProfile;
 import com.findjobbe.findjobbe.mapper.dto.SocialLinkDto;
 import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface IProfileService {
@@ -15,4 +16,6 @@ public interface IProfileService {
   void updateProfile(String accountId, BaseProfile profileRequest);
 
   void updateProfileImage(String accountId, MultipartFile image);
+
+  Page<?> filterProfiles(BaseProfile filterJobs, int page, int size);
 }

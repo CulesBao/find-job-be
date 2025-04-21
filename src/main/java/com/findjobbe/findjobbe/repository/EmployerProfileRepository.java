@@ -1,5 +1,6 @@
 package com.findjobbe.findjobbe.repository;
 
+import com.findjobbe.findjobbe.mapper.dto.FilterEmployerDto;
 import com.findjobbe.findjobbe.mapper.dto.SaveEmployerDto;
 import com.findjobbe.findjobbe.model.EmployerProfile;
 import java.util.Optional;
@@ -31,4 +32,22 @@ public interface EmployerProfileRepository extends JpaRepository<EmployerProfile
       nativeQuery = true)
   Page<SaveEmployerDto[]> findAllByCandidateId(
       @Param("candidateId") UUID candidateId, Pageable pageable);
+
+  @Query(
+      value =
+          "SELECT e.id, e.name, e.logo_url AS logoUrl, p.name_en AS location, "
+              + "CAST((SELECT COUNT(*) FROM job j WHERE j.employer_id = e.id AND j.expired_at >= CURRENT_DATE) AS INTEGER) AS jobCount "
+              + "FROM employer_profile e "
+              + "JOIN provinces p ON e.province_id = p.code "
+              + "WHERE (COALESCE(:name, '') = '' OR e.name LIKE CONCAT('%', :name, '%')) "
+              + "AND (COALESCE(:provinceCode, '') = '' OR p.code = :provinceCode)",
+      countQuery =
+          "SELECT COUNT(*) "
+              + "FROM employer_profile e "
+              + "JOIN provinces p ON e.province_id = p.code "
+              + "WHERE (COALESCE(:name, '') = '' OR e.name LIKE CONCAT('%', :name, '%')) "
+              + "AND (COALESCE(:provinceCode, '') = '' OR p.code = :provinceCode)",
+      nativeQuery = true)
+  Page<FilterEmployerDto[]> filterEmployer(
+      @Param("name") String name, @Param("provinceCode") String provinceCode, Pageable pageable);
 }

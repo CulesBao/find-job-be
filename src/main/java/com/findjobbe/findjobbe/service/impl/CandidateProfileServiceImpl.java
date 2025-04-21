@@ -5,8 +5,10 @@ import com.findjobbe.findjobbe.exception.MessageConstants;
 import com.findjobbe.findjobbe.exception.NotFoundException;
 import com.findjobbe.findjobbe.mapper.dto.BaseProfile;
 import com.findjobbe.findjobbe.mapper.dto.CandidateProfileDto;
+import com.findjobbe.findjobbe.mapper.dto.FilterCandidateDto;
 import com.findjobbe.findjobbe.mapper.dto.SocialLinkDto;
 import com.findjobbe.findjobbe.mapper.request.CandidateProfileRequest;
+import com.findjobbe.findjobbe.mapper.request.FilterCandidateRequest;
 import com.findjobbe.findjobbe.model.*;
 import com.findjobbe.findjobbe.repository.*;
 import com.findjobbe.findjobbe.service.IAccountService;
@@ -18,6 +20,9 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -145,5 +150,22 @@ public class CandidateProfileServiceImpl implements IProfileService {
     } catch (Exception e) {
       throw new BadRequestException(MessageConstants.IMAGE_UPLOAD_FAILED);
     }
+  }
+
+  @Override
+  public Page<FilterCandidateDto[]> filterProfiles(
+      BaseProfile filterEmployerRequest, int page, int size) {
+    FilterCandidateRequest filterCandidateRequest = (FilterCandidateRequest) filterEmployerRequest;
+    Pageable pageable = PageRequest.of(page, size);
+    return candidateProfileRepository.filterCandidate(
+        filterCandidateRequest.getFirstName(),
+        filterCandidateRequest.getLastName(),
+        filterCandidateRequest.getEducation().toString(),
+        filterCandidateRequest.getProvinceCode(),
+        (filterCandidateRequest.getGender() == null
+                || filterCandidateRequest.getGender().trim().isEmpty())
+            ? null
+            : "FEMALE".equalsIgnoreCase(filterCandidateRequest.getGender()) ? false : true,
+        pageable);
   }
 }
