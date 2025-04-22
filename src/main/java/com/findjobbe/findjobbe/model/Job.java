@@ -54,7 +54,7 @@ public class Job extends AbstractEntity {
   @Enumerated(EnumType.STRING)
   private Currency currency;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "employer_id", referencedColumnName = "id")
   private EmployerProfile employerProfile;
 

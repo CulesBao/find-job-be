@@ -22,12 +22,12 @@ public interface EmployerProfileRepository extends JpaRepository<EmployerProfile
       value =
           "SELECT e.id, e.name, p.name_en AS location, e.logo_url AS logoUrl FROM employer_profile e"
               + " JOIN provinces p on e.province_id = p.code"
-              + " JOIN saved_employer se on e.id = se.employer_id"
+              + " JOIN saved_employers se on e.id = se.employer_id"
               + " WHERE se.candidate_id = :candidateId",
       countQuery =
           "SELECT COUNT(*) FROM employer_profile e"
               + " JOIN provinces p on e.province_id = p.code"
-              + " JOIN saved_employer se on e.id = se.employer_id"
+              + " JOIN saved_employers se on e.id = se.employer_id"
               + " WHERE se.candidate_id = :candidateId",
       nativeQuery = true)
   Page<SaveEmployerDto[]> findAllByCandidateId(

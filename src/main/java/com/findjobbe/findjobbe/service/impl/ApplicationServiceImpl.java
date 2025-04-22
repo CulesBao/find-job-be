@@ -66,14 +66,19 @@ public class ApplicationServiceImpl implements IApplicationService {
 
     if (expiredAtDate.isBefore(LocalDate.now()))
       throw new ForbiddenException(MessageConstants.JOB_IS_EXPIRED);
-    Application application =
+
+    Application[] application =
+        applicationRepository.findAllByJobIdAndCandidateProfile(job.getId(), candidateProfile);
+    if (application != null)
+      throw new ForbiddenException(MessageConstants.CANDIDATE_ALREADY_APPLIED);
+    Application newApplication =
         new Application(
             fileService.uploadFile(file),
             coverLetter,
             candidateProfile,
             job,
             JobProccess.APPLICATION_SUBMITTED);
-    applicationRepository.save(application);
+    applicationRepository.save(newApplication);
   }
 
   @Override

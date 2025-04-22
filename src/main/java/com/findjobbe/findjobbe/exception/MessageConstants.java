@@ -32,4 +32,8 @@ public class MessageConstants {
   public static final String EMPLOYER_NOT_FOLLOWING = "employer_not_following";
   public static final String OLD_PASSWORD_NOT_MATCH = "old_password_not_match";
   public static final String JOB_IS_EXPIRED = "job_is_expired";
+  public static final String CANDIDATE_ALREADY_APPLIED = "candidate_already_applied";
+  public static final String NOT_AUTHORIZED_TO_DELETE_JOB = "not_authorized_to_delete_job";
+  public static final String CANDIDATE_ALREADY_FOLLOWING = "candidate_already_following";
+  public static final String EMPLOYER_ALREADY_FOLLOWING = "employer_already_following";
 }

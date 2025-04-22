@@ -44,7 +44,11 @@ public class CandidateFollowerServiceImpl implements IFollowerService {
   public void savedFollow(String candidateProfileId, String employerProfileId) {
     CandidateProfile candidateProfile = findCandidateById(candidateProfileId);
     EmployerProfile employerProfile = findEmployerById(employerProfileId);
+    if (candidateProfile.getSavedEmployers().contains(employerProfile)) {
+      throw new BadRequestException(MessageConstants.CANDIDATE_ALREADY_FOLLOWING);
+    }
     candidateProfile.getSavedEmployers().add(employerProfile);
+    candidateProfileRepository.save(candidateProfile);
   }
 
   @Override
@@ -54,7 +58,9 @@ public class CandidateFollowerServiceImpl implements IFollowerService {
     if (!candidateProfile.getSavedEmployers().contains(employerProfile)) {
       throw new BadRequestException(MessageConstants.CANDIDATE_NOT_FOLLOWING);
     }
+
     candidateProfile.getSavedEmployers().remove(employerProfile);
+    candidateProfileRepository.save(candidateProfile);
   }
 
   @Override

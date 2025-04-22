@@ -17,4 +17,6 @@ public interface IJobService {
   Page<EmployerJobsDto[]> getEmployerJobs(String employerId, int page, int size);
 
   Page<FilterJobsDto[]> filterJobs(FilterJobRequest filterJobRequest, int page, int size);
+
+  void deleteJobById(String employerId, String jobId);
 }

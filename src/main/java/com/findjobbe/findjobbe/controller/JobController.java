@@ -77,4 +77,13 @@ public class JobController {
         new AbstractResponse(
             "Filter jobs successfully", jobService.filterJobs(filterJobRequest, page, size)));
   }
+
+  @DeleteMapping("/{jobId}")
+  @PreAuthorize("hasRole('ROLE_EMPLOYER')")
+  public ResponseEntity<?> deleteJobById(
+      @PathVariable String jobId, @CurrentUser CustomAccountDetails currentUser) {
+    jobService.deleteJobById(
+        currentUser.getAccount().getEmployerProfile().getId().toString(), jobId);
+    return ResponseEntity.ok(new AbstractResponse("Delete job successfully", null));
+  }
 }

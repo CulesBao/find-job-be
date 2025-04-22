@@ -20,11 +20,11 @@ public class Application extends AbstractEntity {
   @Column(name = "cover_letter", length = 2048)
   private String coverLetter;
 
-  @ManyToOne(targetEntity = CandidateProfile.class, cascade = CascadeType.ALL)
+  @ManyToOne(targetEntity = CandidateProfile.class)
   @JoinColumn(name = "candidate_profile_id", referencedColumnName = "id")
   private CandidateProfile candidateProfile;
 
-  @ManyToOne(targetEntity = Job.class, cascade = CascadeType.ALL)
+  @ManyToOne(targetEntity = Job.class)
   @JoinColumn(name = "job_id", referencedColumnName = "id")
   private Job job;
 

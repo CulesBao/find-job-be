@@ -43,11 +43,11 @@ public class CandidateProfile extends AbstractEntity {
   @OneToOne(cascade = CascadeType.ALL)
   private Account account;
 
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "province_id")
   private Province province;
 
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "district_id")
   private District district;
 
@@ -72,5 +72,18 @@ public class CandidateProfile extends AbstractEntity {
     this.gender = candidateProfileRequest.getGender();
     this.education = candidateProfileRequest.getEducation();
     this.bio = candidateProfileRequest.getBio();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    CandidateProfile that = (CandidateProfile) o;
+    return this.getId() != null && this.getId().equals(that.getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return 31;
   }
 }

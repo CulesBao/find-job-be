@@ -3,6 +3,7 @@ package com.findjobbe.findjobbe.repository;
 import com.findjobbe.findjobbe.mapper.dto.CandidateAppliedJobs;
 import com.findjobbe.findjobbe.mapper.dto.EmployerAppliedJobs;
 import com.findjobbe.findjobbe.model.Application;
+import com.findjobbe.findjobbe.model.CandidateProfile;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -61,4 +62,6 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
       @Param("employerId") UUID employerId, @Param("jobId") UUID jobId, Pageable pageable);
 
   List<Application> findAllByJobId(UUID uuid);
+
+  Application[] findAllByJobIdAndCandidateProfile(UUID jobId, CandidateProfile candidateProfile);
 }

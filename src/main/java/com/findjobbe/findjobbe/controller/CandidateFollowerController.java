@@ -8,6 +8,7 @@ import com.findjobbe.findjobbe.model.CustomAccountDetails;
 import com.findjobbe.findjobbe.service.IFollowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +22,7 @@ public class CandidateFollowerController {
   }
 
   @PutMapping("/{employerId}")
+  @PreAuthorize("hasRole('ROLE_CANDIDATE')")
   public ResponseEntity<?> savedEmployer(
       @PathVariable String employerId, @CurrentUser CustomAccountDetails currentUser) {
     followerService.savedFollow(
@@ -29,6 +31,7 @@ public class CandidateFollowerController {
   }
 
   @DeleteMapping("/{employerId}")
+  @PreAuthorize("hasRole('ROLE_CANDIDATE')")
   public ResponseEntity<?> unSavedEmployer(
       @PathVariable String employerId, @CurrentUser CustomAccountDetails currentUser) {
     followerService.deleteFollow(
@@ -37,6 +40,7 @@ public class CandidateFollowerController {
   }
 
   @GetMapping("/")
+  @PreAuthorize("hasRole('ROLE_CANDIDATE')")
   public ResponseEntity<?> getAllSavedEmployers(
       @CurrentUser CustomAccountDetails currentUser,
       @RequestParam(value = "page", defaultValue = "0") int page,

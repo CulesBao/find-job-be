@@ -3,8 +3,8 @@ package com.findjobbe.findjobbe.service.impl;
 import com.findjobbe.findjobbe.exception.ForbiddenException;
 import com.findjobbe.findjobbe.exception.MessageConstants;
 import com.findjobbe.findjobbe.exception.NotFoundException;
-import com.findjobbe.findjobbe.mapper.dto.FilterJobsDto;
 import com.findjobbe.findjobbe.mapper.dto.EmployerJobsDto;
+import com.findjobbe.findjobbe.mapper.dto.FilterJobsDto;
 import com.findjobbe.findjobbe.mapper.request.CreateJobRequest;
 import com.findjobbe.findjobbe.mapper.request.FilterJobRequest;
 import com.findjobbe.findjobbe.model.EmployerProfile;
@@ -91,5 +91,13 @@ public class JobServiceImpl implements IJobService {
         filterJobRequest.getCurrency(),
         filterJobRequest.getSalaryType(),
         pageable);
+  }
+
+  @Override
+  public void deleteJobById(String employerId, String jobId) {
+    Job job = getJobById(jobId);
+    if (!job.getEmployerProfile().getId().toString().equals(employerId))
+      throw new ForbiddenException(MessageConstants.NOT_AUTHORIZED_TO_DELETE_JOB);
+    jobRepository.delete(job);
   }
 }

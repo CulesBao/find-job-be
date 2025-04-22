@@ -34,11 +34,11 @@ public class EmployerProfile extends AbstractEntity {
   @JoinColumn(name = "account_id")
   private Account account;
 
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "province_id")
   private Province province;
 
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "district_id")
   private District district;
 
@@ -47,12 +47,12 @@ public class EmployerProfile extends AbstractEntity {
 
   @OneToMany(mappedBy = "employerProfile", cascade = CascadeType.ALL)
   private List<Job> jobs;
+
   @ManyToMany
   @JoinTable(
-          name = "saved_candidates",
-          joinColumns = @JoinColumn(name = "employer_id"),
-          inverseJoinColumns = @JoinColumn(name = "candidate_id")
-  )
+      name = "saved_candidates",
+      joinColumns = @JoinColumn(name = "employer_id"),
+      inverseJoinColumns = @JoinColumn(name = "candidate_id"))
   private Set<CandidateProfile> savedCandidates = new HashSet<>();
 
   public String getLogoUrl() {
@@ -63,11 +63,24 @@ public class EmployerProfile extends AbstractEntity {
     return website_url;
   }
 
-  public void update(EmployerProfileRequest employerProfileRequest){
+  public void update(EmployerProfileRequest employerProfileRequest) {
     this.name = employerProfileRequest.getName();
     this.about = employerProfileRequest.getAbout();
     this.vision = employerProfileRequest.getVision();
     this.website_url = employerProfileRequest.getWebsiteUrl();
     this.establishedIn = employerProfileRequest.getEstablishedIn();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    EmployerProfile that = (EmployerProfile) o;
+    return this.getId() != null && this.getId().equals(that.getId());
+  }
+
+  @Override
+  public int hashCode() {
+    return 31;
   }
 }
