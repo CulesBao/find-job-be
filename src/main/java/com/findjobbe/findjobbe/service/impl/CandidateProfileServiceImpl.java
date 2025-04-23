@@ -160,7 +160,7 @@ public class CandidateProfileServiceImpl implements IProfileService {
     return candidateProfileRepository.filterCandidate(
         filterCandidateRequest.getFirstName(),
         filterCandidateRequest.getLastName(),
-        filterCandidateRequest.getEducation().toString(),
+        filterCandidateRequest.getEducation(),
         filterCandidateRequest.getProvinceCode(),
         (filterCandidateRequest.getGender() == null
                 || filterCandidateRequest.getGender().trim().isEmpty())
