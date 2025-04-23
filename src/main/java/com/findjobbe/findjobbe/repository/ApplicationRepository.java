@@ -6,6 +6,8 @@ import com.findjobbe.findjobbe.model.Application;
 import com.findjobbe.findjobbe.model.CandidateProfile;
 import java.util.List;
 import java.util.UUID;
+
+import com.findjobbe.findjobbe.model.Job;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -63,5 +65,5 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
 
   List<Application> findAllByJobId(UUID uuid);
 
-  Application[] findAllByJobIdAndCandidateProfile(UUID jobId, CandidateProfile candidateProfile);
+  Application findApplicationByJobAndCandidateProfile(Job job, CandidateProfile candidateProfile);
 }

@@ -26,4 +26,6 @@ public interface IApplicationService {
 
   void updateApplicationStatus(
       SetApplicationsStatusRequest setApplicationsStatusRequest, String employerId, String jobId);
+
+  boolean isCandidateApplied(String candidateId, String jobId);
 }

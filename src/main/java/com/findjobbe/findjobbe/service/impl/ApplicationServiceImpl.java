@@ -67,8 +67,8 @@ public class ApplicationServiceImpl implements IApplicationService {
     if (expiredAtDate.isBefore(LocalDate.now()))
       throw new ForbiddenException(MessageConstants.JOB_IS_EXPIRED);
 
-    Application[] application =
-        applicationRepository.findAllByJobIdAndCandidateProfile(job.getId(), candidateProfile);
+    Application application =
+        applicationRepository.findApplicationByJobAndCandidateProfile(job, candidateProfile);
     if (application != null)
       throw new ForbiddenException(MessageConstants.CANDIDATE_ALREADY_APPLIED);
     Application newApplication =
@@ -159,5 +159,17 @@ public class ApplicationServiceImpl implements IApplicationService {
     }
 
     applicationRepository.saveAll(applications);
+  }
+
+  @Override
+  public boolean isCandidateApplied(String candidateId, String jobId) {
+    CandidateProfile candidateProfile =
+        candidateProfileRepository
+            .findById(UUID.fromString(candidateId))
+            .orElseThrow(() -> new NotFoundException(MessageConstants.PROFILE_NOT_FOUND));
+    Job job = jobService.getJobById(jobId);
+    Application application =
+        applicationRepository.findApplicationByJobAndCandidateProfile(job, candidateProfile);
+    return application != null;
   }
 }

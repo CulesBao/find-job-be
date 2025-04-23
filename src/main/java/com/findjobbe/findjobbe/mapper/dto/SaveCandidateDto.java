@@ -17,4 +17,5 @@ public class SaveCandidateDto extends BaseProfile {
   private String location;
   private String avatarUrl;
   private Boolean gender;
+  private String education;
 }

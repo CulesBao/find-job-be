@@ -16,4 +16,5 @@ public class SaveEmployerDto extends BaseProfile {
     private String name;
     private String location;
     private String logoUrl;
+    private int jobCount;
 }

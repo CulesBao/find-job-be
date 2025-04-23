@@ -8,6 +8,7 @@ import com.findjobbe.findjobbe.model.CustomAccountDetails;
 import com.findjobbe.findjobbe.service.IFollowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,5 +47,16 @@ public class EmployerFollowerController {
             "Get all saved candidates successfully",
             followerService.getFollowers(
                 currentUser.getAccount().getEmployerProfile().getId().toString(), page, size)));
+  }
+
+  @GetMapping("/{candidateId}")
+  @PreAuthorize("hasRole('ROLE_EMPLOYER')")
+  public ResponseEntity<?> isFollowed(
+      @PathVariable String candidateId, @CurrentUser CustomAccountDetails currentUser) {
+    return ResponseEntity.ok(
+        new AbstractResponse(
+            "Check if followed successfully",
+            followerService.isFollowed(
+                currentUser.getAccount().getEmployerProfile().getId().toString(), candidateId)));
   }
 }

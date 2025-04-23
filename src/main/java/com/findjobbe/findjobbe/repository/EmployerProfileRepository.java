@@ -20,15 +20,17 @@ public interface EmployerProfileRepository extends JpaRepository<EmployerProfile
 
   @Query(
       value =
-          "SELECT e.id, e.name, p.name_en AS location, e.logo_url AS logoUrl FROM employer_profile e"
-              + " JOIN provinces p on e.province_id = p.code"
-              + " JOIN saved_employers se on e.id = se.employer_id"
-              + " WHERE se.candidate_id = :candidateId",
+          "SELECT e.id, e.name, p.name_en AS location, e.logo_url AS logoUrl, "
+              + "CAST((SELECT COUNT(*) FROM job j WHERE j.employer_id = e.id AND j.expired_at >= CURRENT_DATE) AS INTEGER) AS jobCount "
+              + "FROM employer_profile e "
+              + "JOIN provinces p ON e.province_id = p.code "
+              + "JOIN saved_employers se ON e.id = se.employer_id "
+              + "WHERE se.candidate_id = :candidateId",
       countQuery =
-          "SELECT COUNT(*) FROM employer_profile e"
-              + " JOIN provinces p on e.province_id = p.code"
-              + " JOIN saved_employers se on e.id = se.employer_id"
-              + " WHERE se.candidate_id = :candidateId",
+          "SELECT COUNT(*) FROM employer_profile e "
+              + "JOIN provinces p ON e.province_id = p.code "
+              + "JOIN saved_employers se ON e.id = se.employer_id "
+              + "WHERE se.candidate_id = :candidateId",
       nativeQuery = true)
   Page<SaveEmployerDto[]> findAllByCandidateId(
       @Param("candidateId") UUID candidateId, Pageable pageable);
@@ -36,11 +38,11 @@ public interface EmployerProfileRepository extends JpaRepository<EmployerProfile
   @Query(
       value =
           "SELECT e.id, e.name, e.logo_url AS logoUrl, p.name_en AS location, "
-              + "CAST((SELECT COUNT(*) FROM job j WHERE j.employer_id = e.id AND j.expired_at >= CURRENT_DATE) AS INTEGER) AS jobCount "
-              + "FROM employer_profile e "
-              + "JOIN provinces p ON e.province_id = p.code "
-              + "WHERE (COALESCE(:name, '') = '' OR e.name LIKE CONCAT('%', :name, '%')) "
-              + "AND (COALESCE(:provinceCode, '') = '' OR p.code = :provinceCode)",
+                  + "CAST((SELECT COUNT(*) FROM job j WHERE j.employer_id = e.id AND j.expired_at >= CURRENT_DATE) AS INTEGER) AS jobCount "
+                  + "FROM employer_profile e "
+                  + "JOIN provinces p ON e.province_id = p.code "
+                  + "WHERE (COALESCE(:name, '') = '' OR e.name LIKE CONCAT('%', :name, '%')) "
+                  + "AND (COALESCE(:provinceCode, '') = '' OR p.code = :provinceCode)",
       countQuery =
           "SELECT COUNT(*) "
               + "FROM employer_profile e "

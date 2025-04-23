@@ -8,4 +8,6 @@ public interface IFollowerService {
   void deleteFollow(String followerId, String followingId);
 
   Page<?> getFollowers(String userId, int page, int size);
+
+  boolean isFollowed(String followerId, String followingId);
 }

@@ -71,4 +71,12 @@ public class EmployerFollowerServiceImpl implements IFollowerService {
     return candidateProfileRepository.findAllByEmployerId(
         UUID.fromString(employerProfileId), pageable);
   }
+
+  @Override
+  public boolean isFollowed(String followerId, String followingId){
+    CandidateProfile candidateProfile = findCandidateById(followingId);
+    EmployerProfile employerProfile = findEmployerById(followerId);
+
+    return employerProfile.getSavedCandidates().contains(candidateProfile);
+  }
 }

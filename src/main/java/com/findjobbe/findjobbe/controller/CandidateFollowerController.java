@@ -51,4 +51,15 @@ public class CandidateFollowerController {
             followerService.getFollowers(
                 currentUser.getAccount().getCandidateProfile().getId().toString(), page, size)));
   }
+
+  @GetMapping("/{employerId}")
+  @PreAuthorize("hasRole('ROLE_CANDIDATE')")
+  public ResponseEntity<?> checkSavedEmployer(
+      @PathVariable String employerId, @CurrentUser CustomAccountDetails currentUser) {
+    return ResponseEntity.ok(
+        new AbstractResponse(
+            "Check saved employer successfully",
+            followerService.isFollowed(
+                currentUser.getAccount().getCandidateProfile().getId().toString(), employerId)));
+  }
 }

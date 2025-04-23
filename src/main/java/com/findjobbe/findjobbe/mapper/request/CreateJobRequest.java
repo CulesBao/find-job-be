@@ -21,12 +21,12 @@ import org.hibernate.validator.constraints.Length;
 public class CreateJobRequest {
   @NotNull
   @NotBlank
-  @Length(min = 6, max = 100)
+  @Length(min = 6)
   private String title;
 
   @NotNull
   @NotBlank
-  @Length(min = 10, max = 2048)
+  @Length(min = 10)
   private String description;
 
   @NotNull private String responsibility;

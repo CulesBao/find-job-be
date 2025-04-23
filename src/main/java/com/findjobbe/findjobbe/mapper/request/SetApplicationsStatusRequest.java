@@ -1,5 +1,7 @@
 package com.findjobbe.findjobbe.mapper.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -17,7 +19,7 @@ public class SetApplicationsStatusRequest {
   @Getter
   @Setter
   public static class SetApplicationStatus {
-    private UUID applicationId;
-    private String status;
+    @NotNull @NotBlank private UUID applicationId;
+    @NotNull @NotBlank private String status;
   }
 }

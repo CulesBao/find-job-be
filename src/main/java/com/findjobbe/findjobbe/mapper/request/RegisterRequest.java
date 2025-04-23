@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.findjobbe.findjobbe.enums.Provider;
 import com.findjobbe.findjobbe.enums.Role;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class RegisterRequest {
   private String email;
 
   @NotNull
+  @NotBlank
   @Length(min = 8, max = 100)
   private String password;
 

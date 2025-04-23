@@ -101,4 +101,15 @@ public class ApplicationController {
         jobId);
     return ResponseEntity.ok(new AbstractResponse("Update application status successfully", null));
   }
+
+  @GetMapping("/job/{jobId}/status")
+  @PreAuthorize("hasRole('ROLE_CANDIDATE')")
+  public ResponseEntity<?> isCandidateApplied(
+      @PathVariable String jobId, @CurrentUser CustomAccountDetails currentUser) {
+    return ResponseEntity.ok(
+        new AbstractResponse(
+            "Check application status successfully",
+            applicationService.isCandidateApplied(
+                currentUser.getAccount().getCandidateProfile().getId().toString(), jobId)));
+  }
 }

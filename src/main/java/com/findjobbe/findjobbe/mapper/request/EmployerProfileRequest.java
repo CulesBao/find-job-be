@@ -25,15 +25,15 @@ public class EmployerProfileRequest extends BaseProfile {
 
   @NotNull
   @NotBlank
-  @Length(min = 50, max = 500)
+  @Length(min = 50)
   private String about;
 
   @NotNull
   @NotBlank
-  @Length(min = 50, max = 500)
+  @Length(min = 50)
   private String vision;
 
-  @NotNull private String websiteUrl;
+  @NotNull @NotBlank private String websiteUrl;
   @NotNull private Date establishedIn;
   @NotNull private String location;
   @NotNull @NotBlank private String provinceCode;
