@@ -30,6 +30,7 @@ public class CandidateProfileDto extends BaseProfile {
   private List<SocialLinkDto> socialLinks;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+  private String email;
 
   public CandidateProfileDto(CandidateProfile candidateProfile) {
     this.id = candidateProfile.getId();
@@ -51,5 +52,6 @@ public class CandidateProfileDto extends BaseProfile {
             .collect(Collectors.toList());
     this.createdAt = candidateProfile.getCreatedAt();
     this.updatedAt = candidateProfile.getUpdatedAt();
+    this.email = candidateProfile.getAccount().getEmail();
   }
 }

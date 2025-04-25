@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CandidateAppliedJobs {
-  private UUID id;
+  private UUID applicationId;
   private String logoUrl;
   private String name;
   private String location;
@@ -20,6 +20,7 @@ public class CandidateAppliedJobs {
   private double minSalary;
   private double maxSalary;
   private String currency;
-  private Date createdAt;
+  private Date expiredAt;
   private String jobProccess;
+  private UUID jobId;
 }

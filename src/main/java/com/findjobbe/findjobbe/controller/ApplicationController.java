@@ -66,6 +66,7 @@ public class ApplicationController {
   public ResponseEntity<?> getAllApplicationsByJobId(
       @PathVariable String jobId,
       @CurrentUser CustomAccountDetails currentUser,
+      @RequestParam(value = "jobProcess", defaultValue = "") String jobProcess,
       @RequestParam(value = "page", defaultValue = "0") int page,
       @RequestParam(value = "size", defaultValue = "10") int size) {
     return ResponseEntity.ok(
@@ -73,6 +74,7 @@ public class ApplicationController {
             "Get all applications successfully",
             applicationService.getEmployerAppliedJobs(
                 currentUser.getAccount().getEmployerProfile().getId().toString(),
+                jobProcess,
                 jobId,
                 page,
                 size)));

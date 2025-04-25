@@ -19,7 +19,7 @@ public interface IApplicationService {
   Page<CandidateAppliedJobs[]> getCandidateAppliedJobs(String candidateId, int page, int size);
 
   Page<EmployerAppliedJobs[]> getEmployerAppliedJobs(
-      String employerId, String jobId, int page, int size);
+      String employerId, String jobProccess, String jobId, int page, int size);
 
   ApplicationDto getApplicationById(
       String applicationId, CustomAccountDetails customAccountDetails);

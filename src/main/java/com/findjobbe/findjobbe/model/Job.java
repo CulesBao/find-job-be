@@ -23,10 +23,10 @@ public class Job extends AbstractEntity {
   @Column(nullable = false)
   private String title;
 
-  @Column(length = 2048)
+  @Column()
   private String description;
 
-  @Column(length = 2048)
+  @Column()
   private String responsibility;
 
   @Column(name = "job_type")

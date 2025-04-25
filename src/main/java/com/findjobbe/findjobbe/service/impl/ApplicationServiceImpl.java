@@ -107,10 +107,10 @@ public class ApplicationServiceImpl implements IApplicationService {
 
   @Override
   public Page<EmployerAppliedJobs[]> getEmployerAppliedJobs(
-      String employerId, String jobId, int page, int size) {
+      String employerId, String jobProcess, String jobId, int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
     return applicationRepository.getEmployerAppliedJobs(
-        UUID.fromString(employerId), UUID.fromString(jobId), pageable);
+        UUID.fromString(employerId), jobProcess, UUID.fromString(jobId), pageable);
   }
 
   @Override
@@ -150,10 +150,9 @@ public class ApplicationServiceImpl implements IApplicationService {
                 Collectors.toMap(
                     SetApplicationsStatusRequest.SetApplicationStatus::getApplicationId,
                     SetApplicationsStatusRequest.SetApplicationStatus::getStatus));
-
     for (Application application : applications) {
       String status = applicationStatusMap.get(application.getId());
-      if (application.getProccess() != JobProccess.WITHDRAWN && status != null) {
+      if (application.getProccess() != JobProccess.WITHDRAWN && status != null && status != "") {
         application.setProccess(JobProccess.valueOf(status));
       }
     }

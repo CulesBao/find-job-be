@@ -29,6 +29,7 @@ public class EmployerProfileDto extends BaseProfile {
   private List<SocialLinkDto> socialLinks;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+  private String email;
 
   public EmployerProfileDto(EmployerProfile employerProfile) {
     this.id = employerProfile.getId();
@@ -48,5 +49,6 @@ public class EmployerProfileDto extends BaseProfile {
             .collect(Collectors.toList());
     this.createdAt = employerProfile.getCreatedAt();
     this.updatedAt = employerProfile.getUpdatedAt();
+    this.email = employerProfile.getAccount().getEmail();
   }
 }
