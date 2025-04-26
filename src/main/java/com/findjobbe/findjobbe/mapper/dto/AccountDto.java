@@ -1,7 +1,6 @@
 package com.findjobbe.findjobbe.mapper.dto;
 
 import com.findjobbe.findjobbe.model.Account;
-import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +19,8 @@ public class AccountDto {
   private String role;
   private CandidateProfileDto candidateProfile;
   private EmployerProfileDto employerProfile;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  private String createdAt;
+  private String updatedAt;
 
   public AccountDto(Account account) {
     this.id = account.getId();
@@ -37,8 +36,8 @@ public class AccountDto {
         (account.getEmployerProfile() != null)
             ? new EmployerProfileDto(account.getEmployerProfile())
             : null;
-    this.createdAt = account.getCreatedAt();
-    this.updatedAt = account.getUpdatedAt();
+    this.createdAt = account.getCreatedAt() != null ? account.getCreatedAt().toString() : null;
+    this.updatedAt = account.getUpdatedAt() != null ? account.getUpdatedAt().toString() : null;
   }
 
   public boolean getIsActive() {

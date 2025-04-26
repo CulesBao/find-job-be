@@ -1,5 +1,6 @@
 package com.findjobbe.findjobbe.service.impl;
 
+import com.findjobbe.findjobbe.enums.Provider;
 import com.findjobbe.findjobbe.exception.*;
 import com.findjobbe.findjobbe.mapper.dto.AccountDto;
 import com.findjobbe.findjobbe.mapper.request.LoginRequest;
@@ -86,7 +87,7 @@ public class AccountServiceImpl implements IAccountService {
   public LoginResponse login(LoginRequest loginRequest) {
     Account account =
         accountRepository
-            .findByEmailAndIsActive(loginRequest.getEmail(), true)
+            .findByEmailAndIsActiveAndProvider(loginRequest.getEmail(), true, Provider.LOCAL)
             .orElseThrow(() -> new UnauthorizedException(MessageConstants.LOGIN_FAILED));
 
     try {
@@ -118,10 +119,12 @@ public class AccountServiceImpl implements IAccountService {
       throw new BadRequestException(MessageConstants.PASSWORD_NOT_MATCH);
     }
     Account account = getAccountById(accountId);
-    if (!bCryptPasswordEncoder.matches(resetPasswordRequest.getOldPassword(), account.getPassword())) {
+    if (!bCryptPasswordEncoder.matches(
+        resetPasswordRequest.getOldPassword(), account.getPassword())) {
       throw new BadRequestException(MessageConstants.OLD_PASSWORD_NOT_MATCH);
     }
-    if (bCryptPasswordEncoder.matches(resetPasswordRequest.getNewPassword(), account.getPassword())) {
+    if (bCryptPasswordEncoder.matches(
+        resetPasswordRequest.getNewPassword(), account.getPassword())) {
       throw new ForbiddenException(MessageConstants.PASSWORD_MUST_BE_DIFFERENT);
     }
 
