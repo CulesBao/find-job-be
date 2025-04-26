@@ -3,7 +3,6 @@ package com.findjobbe.findjobbe.mapper.dto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.findjobbe.findjobbe.model.EmployerProfile;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -23,12 +22,12 @@ public class EmployerProfileDto extends BaseProfile {
   private String vision;
   private String websiteUrl;
   private String logoUrl;
-  private Date establishedIn;
+  private String establishedIn;
   private ProvinceDto province;
   private DistrictDto district;
   private List<SocialLinkDto> socialLinks;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  private String createdAt;
+  private String updatedAt;
   private String email;
 
   public EmployerProfileDto(EmployerProfile employerProfile) {
@@ -38,7 +37,7 @@ public class EmployerProfileDto extends BaseProfile {
     this.vision = employerProfile.getVision();
     this.websiteUrl = employerProfile.getWebsiteUrl();
     this.logoUrl = employerProfile.getLogoUrl();
-    this.establishedIn = employerProfile.getEstablishedIn();
+    this.establishedIn = employerProfile.getEstablishedIn().toString();
     this.province = new ProvinceDto(employerProfile.getProvince());
     this.district = new DistrictDto(employerProfile.getDistrict());
     this.socialLinks =
@@ -47,8 +46,8 @@ public class EmployerProfileDto extends BaseProfile {
             .stream()
             .map(SocialLinkDto::new)
             .collect(Collectors.toList());
-    this.createdAt = employerProfile.getCreatedAt();
-    this.updatedAt = employerProfile.getUpdatedAt();
+    this.createdAt = employerProfile.getCreatedAt().toString();
+    this.updatedAt = employerProfile.getUpdatedAt().toString();
     this.email = employerProfile.getAccount().getEmail();
   }
 }

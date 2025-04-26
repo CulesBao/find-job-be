@@ -11,6 +11,7 @@ import com.findjobbe.findjobbe.repository.AccountRepository;
 import com.findjobbe.findjobbe.security.JwtTokenManager;
 import com.findjobbe.findjobbe.service.IOAuth2Service;
 import com.findjobbe.findjobbe.utils.GenerateCode;
+import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,6 +52,7 @@ public class OAuth2ServiceImpl implements IOAuth2Service {
   }
 
   @Override
+  @Transactional
   public LoginResponse login(String email, OAuth2User oAuth2User) {
     String action = isExits(email);
     if (action.equals("NOT_EXISTS")) {

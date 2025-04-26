@@ -1,6 +1,7 @@
 package com.findjobbe.findjobbe.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.findjobbe.findjobbe.mapper.response.LoginResponse;
 import com.findjobbe.findjobbe.service.IOAuth2Service;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
     LoginResponse loginResponse = oAuth2Service.login(email, oAuth2User);
 
     ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
     String accountDtoJson = objectMapper.writeValueAsString(loginResponse.getAccountDto());
     String encodedAccountDto = URLEncoder.encode(accountDtoJson, StandardCharsets.UTF_8);
 

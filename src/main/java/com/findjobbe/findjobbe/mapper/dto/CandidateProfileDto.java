@@ -20,7 +20,7 @@ public class CandidateProfileDto extends BaseProfile {
   private String firstName;
   private String lastName;
   private String phoneNumber;
-  private Date dateOfBirth;
+  private String dateOfBirth;
   private Boolean gender;
   private Education education;
   private String avatarUrl;
@@ -28,8 +28,8 @@ public class CandidateProfileDto extends BaseProfile {
   private ProvinceDto province;
   private DistrictDto district;
   private List<SocialLinkDto> socialLinks;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  private String createdAt;
+  private String updatedAt;
   private String email;
 
   public CandidateProfileDto(CandidateProfile candidateProfile) {
@@ -37,7 +37,7 @@ public class CandidateProfileDto extends BaseProfile {
     this.firstName = candidateProfile.getFirstName();
     this.lastName = candidateProfile.getLastName();
     this.phoneNumber = candidateProfile.getPhoneNumber();
-    this.dateOfBirth = candidateProfile.getDateOfBirth();
+    this.dateOfBirth = candidateProfile.getDateOfBirth().toString();
     this.bio = candidateProfile.getBio();
     this.avatarUrl = candidateProfile.getAvatarUrl();
     this.gender = candidateProfile.getGender();
@@ -50,8 +50,8 @@ public class CandidateProfileDto extends BaseProfile {
             .stream()
             .map(SocialLinkDto::new)
             .collect(Collectors.toList());
-    this.createdAt = candidateProfile.getCreatedAt();
-    this.updatedAt = candidateProfile.getUpdatedAt();
+    this.createdAt = candidateProfile.getCreatedAt().toString();
+    this.updatedAt = candidateProfile.getUpdatedAt().toString();
     this.email = candidateProfile.getAccount().getEmail();
   }
 }
