@@ -100,4 +100,10 @@ public class JobServiceImpl implements IJobService {
       throw new ForbiddenException(MessageConstants.NOT_AUTHORIZED_TO_DELETE_JOB);
     jobRepository.delete(job);
   }
+
+  @Override
+  public Page<FilterJobsDto[]> getJobsByEmployerId(String employerId, int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return jobRepository.getJobsByEmployerId(UUID.fromString(employerId), pageable);
+  }
 }

@@ -17,7 +17,7 @@ public class Application extends AbstractEntity {
   @Column(name = "cv_url")
   private String cvUrl;
 
-  @Column(name = "cover_letter")
+  @Column(name = "cover_letter", length = 2500)
   private String coverLetter;
 
   @ManyToOne(targetEntity = CandidateProfile.class)

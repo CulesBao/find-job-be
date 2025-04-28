@@ -37,7 +37,9 @@ public class EmployerProfileDto extends BaseProfile {
     this.vision = employerProfile.getVision();
     this.websiteUrl = employerProfile.getWebsiteUrl();
     this.logoUrl = employerProfile.getLogoUrl();
-    this.establishedIn = employerProfile.getEstablishedIn().toString();
+    this.establishedIn = Optional.ofNullable(employerProfile.getEstablishedIn())
+            .map(Object::toString)
+            .orElse(null);
     this.province = new ProvinceDto(employerProfile.getProvince());
     this.district = new DistrictDto(employerProfile.getDistrict());
     this.socialLinks =
@@ -46,8 +48,12 @@ public class EmployerProfileDto extends BaseProfile {
             .stream()
             .map(SocialLinkDto::new)
             .collect(Collectors.toList());
-    this.createdAt = employerProfile.getCreatedAt().toString();
-    this.updatedAt = employerProfile.getUpdatedAt().toString();
+    this.createdAt = Optional.ofNullable(employerProfile.getCreatedAt())
+            .map(Object::toString)
+            .orElse(null);
+    this.updatedAt = Optional.ofNullable(employerProfile.getUpdatedAt())
+            .map(Object::toString)
+            .orElse(null);
     this.email = employerProfile.getAccount().getEmail();
   }
 }

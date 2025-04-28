@@ -68,7 +68,8 @@ public class SecurityConfiguration {
                         "/api/candidate-profile/filter",
                         "/api/auth/oauth2/**",
                         "/api/oauth2/callback/**",
-                            "/api/chat/")
+                        "/api/chat/",
+                        "/api/job/employer/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated())

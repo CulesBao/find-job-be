@@ -38,7 +38,8 @@ public class CandidateProfile extends AbstractEntity {
   @Column(name = "avatar_url")
   private String avatarUrl;
 
-  @Column private String bio;
+  @Column(length = 2500)
+  private String bio;
 
   @OneToOne(cascade = CascadeType.ALL)
   private Account account;

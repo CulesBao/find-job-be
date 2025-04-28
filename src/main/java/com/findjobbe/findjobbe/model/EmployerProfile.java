@@ -19,9 +19,11 @@ public class EmployerProfile extends AbstractEntity {
   @Column(nullable = false)
   private String name;
 
-  @Column private String about;
+  @Column(length = 2500)
+  private String about;
 
-  @Column private String vision;
+  @Column(length = 2500)
+  private String vision;
 
   @Column private String website_url;
 

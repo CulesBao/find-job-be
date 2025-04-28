@@ -10,7 +10,6 @@ import com.findjobbe.findjobbe.mapper.request.SocialLinkRequest;
 import com.findjobbe.findjobbe.mapper.response.AbstractResponse;
 import com.findjobbe.findjobbe.model.CustomAccountDetails;
 import com.findjobbe.findjobbe.service.IProfileService;
-import com.findjobbe.findjobbe.service.impl.CandidateProfileServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,14 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/candidate-profile")
 public class CandidateProfileController {
   private final IProfileService profileService;
-  private final CandidateProfileServiceImpl candidateProfileServiceImpl;
 
   @Autowired
-  public CandidateProfileController(
-      ProfileServiceFactory profileServiceFactory,
-      CandidateProfileServiceImpl candidateProfileServiceImpl) {
+  public CandidateProfileController(ProfileServiceFactory profileServiceFactory) {
     this.profileService = profileServiceFactory.getProfileService(Role.CANDIDATE);
-    this.candidateProfileServiceImpl = candidateProfileServiceImpl;
   }
 
   @PostMapping("/")
@@ -92,7 +87,7 @@ public class CandidateProfileController {
     return ResponseEntity.ok(
         new AbstractResponse(
             "Filtered candidates successfully",
-            candidateProfileServiceImpl.filterProfiles(
+            profileService.filterProfiles(
                 new FilterCandidateRequest(firstName, lastName, provinceCode, education, gender),
                 page,
                 size)));

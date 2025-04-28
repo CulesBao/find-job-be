@@ -37,7 +37,9 @@ public class CandidateProfileDto extends BaseProfile {
     this.firstName = candidateProfile.getFirstName();
     this.lastName = candidateProfile.getLastName();
     this.phoneNumber = candidateProfile.getPhoneNumber();
-    this.dateOfBirth = candidateProfile.getDateOfBirth().toString();
+    this.dateOfBirth = Optional.ofNullable(candidateProfile.getDateOfBirth())
+            .map(Object::toString)
+            .orElse(null);
     this.bio = candidateProfile.getBio();
     this.avatarUrl = candidateProfile.getAvatarUrl();
     this.gender = candidateProfile.getGender();
@@ -50,8 +52,12 @@ public class CandidateProfileDto extends BaseProfile {
             .stream()
             .map(SocialLinkDto::new)
             .collect(Collectors.toList());
-    this.createdAt = candidateProfile.getCreatedAt().toString();
-    this.updatedAt = candidateProfile.getUpdatedAt().toString();
+    this.createdAt = Optional.ofNullable(candidateProfile.getCreatedAt())
+            .map(Object::toString)
+            .orElse(null);
+    this.updatedAt = Optional.ofNullable(candidateProfile.getUpdatedAt())
+            .map(Object::toString)
+            .orElse(null);
     this.email = candidateProfile.getAccount().getEmail();
   }
 }

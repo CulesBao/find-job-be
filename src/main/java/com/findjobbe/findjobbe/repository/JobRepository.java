@@ -71,4 +71,23 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
       @Param("currency") String currency,
       @Param("salaryType") String salaryType,
       Pageable pageable);
+
+  @Query(
+      value =
+          "SELECT j.id, e.logo_url AS logoUrl, e.name, p.name_en AS location, j.title, "
+              + " j.min_salary AS minSalary, j.max_salary AS maxSalary, j.currency, j.expired_at AS expiredAt "
+              + " FROM employer_profile e "
+              + " JOIN job j ON e.id = j.employer_id "
+              + " JOIN provinces p ON e.province_id = p.code "
+              + " WHERE e.id = :employerId "
+              + " AND j.expired_at >= CURRENT_DATE "
+              + " ORDER BY j.expired_at DESC ",
+      countQuery =
+          "SELECT COUNT(*) FROM employer_profile e "
+              + " JOIN job j ON e.id = j.employer_id "
+              + " JOIN provinces p ON e.province_id = p.code "
+              + " WHERE e.id = :employerId "
+              + " AND j.expired_at >= CURRENT_DATE ",
+      nativeQuery = true)
+  Page<FilterJobsDto[]> getJobsByEmployerId(@Param("employerId") UUID employerId, Pageable pageable);
 }

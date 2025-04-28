@@ -86,4 +86,14 @@ public class JobController {
         currentUser.getAccount().getEmployerProfile().getId().toString(), jobId);
     return ResponseEntity.ok(new AbstractResponse("Delete job successfully", null));
   }
+
+  @GetMapping("/employer/{employerId}")
+  public ResponseEntity<?> getJobsByEmployerId(
+      @PathVariable String employerId,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "6") int size) {
+    return ResponseEntity.ok(
+        new AbstractResponse(
+            "Get job successfully", jobService.getJobsByEmployerId(employerId, page, size)));
+  }
 }

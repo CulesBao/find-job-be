@@ -162,10 +162,9 @@ public class CandidateProfileServiceImpl implements IProfileService {
         filterCandidateRequest.getLastName(),
         filterCandidateRequest.getEducation(),
         filterCandidateRequest.getProvinceCode(),
-        (filterCandidateRequest.getGender() == null
-                || filterCandidateRequest.getGender().trim().isEmpty())
+        (filterCandidateRequest.getGender() == null || filterCandidateRequest.getGender().isEmpty())
             ? null
-            : "FEMALE".equalsIgnoreCase(filterCandidateRequest.getGender()) ? false : true,
+            : Boolean.valueOf("1".equals(filterCandidateRequest.getGender())),
         pageable);
   }
 }
