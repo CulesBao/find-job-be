@@ -14,11 +14,9 @@ services:
       - find-job-volume:/var/lib/postgresql/data
     networks:
       - app-network
-  app:
-    container_name: app
-    build:
-      context: .
-      dockerfile: Dockerfile
+  be:
+    container_name: be
+    image: baocules/find-job-be:latest
     restart: always
     ports:
       - "8080:8080"
@@ -28,6 +26,16 @@ services:
       - .env
     depends_on:
       - db
+    networks:
+      - app-network
+  fe:
+    container_name: fe
+    image: baocules/find-job-fe:latest
+    restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - be
     networks:
       - app-network
 volumes:

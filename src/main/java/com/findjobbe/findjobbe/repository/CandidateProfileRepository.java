@@ -40,7 +40,7 @@ public interface CandidateProfileRepository extends JpaRepository<CandidateProfi
               + "WHERE (COALESCE(:firstName, '') = '' OR c.first_name LIKE CONCAT('%', :firstName, '%')) "
               + "AND (COALESCE(:lastName, '') = '' OR c.last_name LIKE CONCAT('%', :lastName, '%')) "
               + "AND (COALESCE(:education, '') = '' OR c.education = :education) "
-              + "AND (COALESCE(:provinceCode, '') = '' OR c.province_id = :provinceCode) "
+              + "AND (COALESCE(:provinceCode, '') = '' OR p.code = :provinceCode) "
               + "AND (:gender IS NULL OR (c.gender = :gender))",
       countQuery =
           "SELECT COUNT(*) "
@@ -49,7 +49,7 @@ public interface CandidateProfileRepository extends JpaRepository<CandidateProfi
               + "WHERE (COALESCE(:firstName, '') = '' OR c.first_name ILIKE CONCAT('%', :firstName, '%')) "
               + "AND (COALESCE(:lastName, '') = '' OR c.last_name ILIKE CONCAT('%', :lastName, '%')) "
               + "AND (COALESCE(:education, '') = '' OR c.education = :education) "
-              + "AND (COALESCE(:provinceCode, '') = '' OR c.province_id = :provinceCode) "
+              + "AND (COALESCE(:provinceCode, '') = '' OR p.code = :provinceCode) "
               + "AND (:gender IS NULL OR (c.gender = :gender))",
       nativeQuery = true)
   Page<FilterCandidateDto[]> filterCandidate(
